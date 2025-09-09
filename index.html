@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Kiminini Premier League - Live standings with easy editing" />
+  <meta name="description" content="Kiminini Premier League - Live standings with direct editing" />
   <meta name="theme-color" content="#0b8a3e" />
   <title>Kiminini Premier League — Editable Standings</title>
   
@@ -191,7 +191,7 @@
     
     .edit-input {
       width: 100%;
-      padding: 6px;
+      padding: 8px;
       border: 1px solid var(--edit);
       border-radius: 4px;
       font-size: 14px;
@@ -201,12 +201,6 @@
     
     .edit-input.text-input {
       text-align: left;
-    }
-    
-    .edit-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
     }
     
     /* Controls */
@@ -323,12 +317,12 @@
       align-items: center;
     }
     
-    .add-fixture select {
+    .add-fixture input {
+      flex: 1;
       padding: 8px;
       border-radius: 6px;
       border: 1px solid var(--border);
       font-size: 14px;
-      flex: 1;
       min-width: 120px;
     }
     
@@ -471,6 +465,20 @@
       display: flex;
     }
     
+    /* Data Persistence Notice */
+    .persistence-notice {
+      background: rgba(11,138,62,0.1);
+      border-left: 4px solid var(--green);
+      padding: 10px;
+      margin: 16px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 14px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
     /* Mobile First Responsive */
     @media (min-width: 768px) {
       .container {
@@ -504,10 +512,6 @@
       .add-fixture {
         flex-wrap: nowrap;
       }
-      
-      .add-fixture select {
-        flex: 0 1 auto;
-      }
     }
     
     @media (min-width: 1024px) {
@@ -532,6 +536,11 @@
   </header>
   
   <div class="container">
+    <div class="persistence-notice">
+      <i class="fas fa-info-circle" style="color: var(--green);"></i>
+      <span>All changes are saved automatically and will persist when you revisit</span>
+    </div>
+    
     <div class="controls">
       <div class="admin-controls">
         <input type="password" id="admin-pass" placeholder="Admin password" style="padding: 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; flex: 1; min-width: 150px;">
@@ -587,13 +596,9 @@
       </h2>
       
       <div class="add-fixture">
-        <select id="team-a">
-          <option value="">Select Team A</option>
-        </select>
+        <input type="text" id="team-a" placeholder="Team A name">
         <span style="font-weight: 600; color: var(--muted);">vs</span>
-        <select id="team-b">
-          <option value="">Select Team B</option>
-        </select>
+        <input type="text" id="team-b" placeholder="Team B name">
         <button class="btn" id="add-fixture-btn">
           <i class="fas fa-plus"></i> Add
         </button>
@@ -630,7 +635,7 @@
       {name: "Kiminini Legends FC", played: 34, won: 29, drawn: 3, lost: 2, goalsFor: 101, goalsAgainst: 32, goalDifference: 69, points: 90},
       {name: "Hilario Allstars FC", played: 34, won: 27, drawn: 5, lost: 2, goalsFor: 98, goalsAgainst: 16, goalDifference: 82, points: 86},
       {name: "Kiminini Stars FC", played: 34, won: 24, drawn: 5, lost: 5, goalsFor: 88, goalsAgainst: 33, goalDifference: 55, points: 77},
-      {name: "Small Tiger FC", played: 34, won: 22, drawn: 5, lost: 7, goalsFor: 80, goalsAgainst: 40, goalDifference: 40, points: 71},
+      {name: "Small Tigers FC", played: 34, won: 22, drawn: 5, lost: 7, goalsFor: 80, goalsAgainst: 40, goalDifference: 40, points: 71},
       {name: "Samba FC", played: 34, won: 21, drawn: 4, lost: 9, goalsFor: 67, goalsAgainst: 29, goalDifference: 38, points: 67},
       {name: "Royal Bullets FC", played: 34, won: 18, drawn: 6, lost: 10, goalsFor: 89, goalsAgainst: 47, goalDifference: 42, points: 60},
       {name: "Namawanga FC", played: 34, won: 17, drawn: 8, lost: 9, goalsFor: 78, goalsAgainst: 49, goalDifference: 29, points: 59},
@@ -658,8 +663,8 @@
     
     // DOM Elements
     const tableBody = document.getElementById('table-body');
-    const teamASelect = document.getElementById('team-a');
-    const teamBSelect = document.getElementById('team-b');
+    const teamAInput = document.getElementById('team-a');
+    const teamBInput = document.getElementById('team-b');
     const fixtureList = document.getElementById('fixture-list');
     const adminPassInput = document.getElementById('admin-pass');
     const adminStatus = document.getElementById('admin-status');
@@ -673,7 +678,6 @@
       loadData();
       renderTable();
       renderFixtures();
-      populateTeamSelects();
       setupEventListeners();
     }
     
@@ -685,14 +689,17 @@
           const data = JSON.parse(savedData);
           teams = data.teams || [...INITIAL_TEAMS];
           fixtures = data.fixtures || [];
+          showToast('Data loaded successfully', 'success');
         } catch (e) {
           console.error('Error loading data:', e);
           teams = [...INITIAL_TEAMS];
           fixtures = [];
+          showToast('Using default data', 'warning');
         }
       } else {
         teams = [...INITIAL_TEAMS];
         fixtures = [];
+        showToast('Using default data', 'warning');
       }
     }
     
@@ -700,6 +707,7 @@
     function saveData() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ teams, fixtures }));
+        showToast('Data saved successfully', 'success');
       } catch (e) {
         console.error('Error saving data:', e);
         showToast('Failed to save data', 'error');
@@ -785,24 +793,6 @@
       });
     }
     
-    // Populate team selects
-    function populateTeamSelects() {
-      teamASelect.innerHTML = '<option value="">Select Team A</option>';
-      teamBSelect.innerHTML = '<option value="">Select Team B</option>';
-      
-      teams.forEach(team => {
-        const optionA = document.createElement('option');
-        optionA.value = team.name;
-        optionA.textContent = team.name;
-        teamASelect.appendChild(optionA);
-        
-        const optionB = document.createElement('option');
-        optionB.value = team.name;
-        optionB.textContent = team.name;
-        teamBSelect.appendChild(optionB);
-      });
-    }
-    
     // Setup event listeners
     function setupEventListeners() {
       // Admin login
@@ -866,11 +856,11 @@
       
       // Add fixture
       document.getElementById('add-fixture-btn').addEventListener('click', () => {
-        const teamA = teamASelect.value;
-        const teamB = teamBSelect.value;
+        const teamA = teamAInput.value.trim();
+        const teamB = teamBInput.value.trim();
         
         if (!teamA || !teamB) {
-          showToast('Please select both teams', 'warning');
+          showToast('Please enter both team names', 'warning');
           return;
         }
         
@@ -891,9 +881,9 @@
         renderFixtures();
         showToast('Fixture added', 'success');
         
-        // Reset selects
-        teamASelect.selectedIndex = 0;
-        teamBSelect.selectedIndex = 0;
+        // Reset inputs
+        teamAInput.value = '';
+        teamBInput.value = '';
       });
       
       // Table cell editing
