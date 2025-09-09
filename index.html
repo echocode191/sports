@@ -10,6 +10,9 @@
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   
+  <!-- html2canvas for screenshot functionality -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
   <style>
     :root{
       --green:#0b8a3e;
@@ -501,6 +504,116 @@
       display: flex;
     }
     
+    /* Share Modal */
+    .share-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .share-modal.active {
+      display: flex;
+    }
+    
+    .share-content {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 90%;
+      width: 400px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    
+    .share-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .share-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .share-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    
+    .share-preview {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    
+    .share-preview img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
+    
+    .share-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .share-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      flex: 1;
+      min-width: 80px;
+    }
+    
+    .share-option:hover {
+      background-color: var(--light);
+    }
+    
+    .share-option i {
+      font-size: 24px;
+    }
+    
+    .share-option.whatsapp {
+      color: #25D366;
+    }
+    
+    .share-option.facebook {
+      color: #1877F2;
+    }
+    
+    .share-option.twitter {
+      color: #1DA1F2;
+    }
+    
+    .share-option.download {
+      color: var(--green);
+    }
+    
+    .share-option span {
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
     /* Mobile First Responsive */
     @media (min-width: 768px) {
       .container {
@@ -581,6 +694,17 @@
       </div>
     </div>
     
+    <div class="controls">
+      <div>
+        <button class="btn" id="btn-save">
+          <i class="fas fa-download"></i> Save
+        </button>
+        <button class="btn" id="btn-share">
+          <i class="fas fa-share-alt"></i> Share
+        </button>
+      </div>
+    </div>
+    
     <div class="table-container" id="table-container">
       <div class="table-header">
         <span>League Standings</span>
@@ -650,6 +774,39 @@
     <i class="fas fa-edit"></i> Edit Mode
   </div>
   
+  <!-- Share Modal -->
+  <div class="share-modal" id="share-modal">
+    <div class="share-content">
+      <div class="share-header">
+        <h3 class="share-title">Share Standings</h3>
+        <button class="share-close" id="share-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="share-preview" id="share-preview">
+        <!-- Preview image will be added here -->
+      </div>
+      <div class="share-options">
+        <div class="share-option whatsapp" data-platform="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </div>
+        <div class="share-option facebook" data-platform="facebook">
+          <i class="fab fa-facebook-f"></i>
+          <span>Facebook</span>
+        </div>
+        <div class="share-option twitter" data-platform="twitter">
+          <i class="fab fa-twitter"></i>
+          <span>Twitter</span>
+        </div>
+        <div class="share-option download" data-platform="download">
+          <i class="fas fa-download"></i>
+          <span>Download</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <script>
     // Constants
     const STORAGE_KEY = 'kiminini_premier_league';
@@ -685,6 +842,7 @@
     let isAdmin = false;
     let editMode = false;
     let currentEditCell = null;
+    let shareImageData = null;
     
     // DOM Elements
     const tableBody = document.getElementById('table-body');
@@ -698,6 +856,11 @@
     const editToggle = document.getElementById('edit-toggle');
     const editIndicator = document.getElementById('edit-indicator');
     const tableContainer = document.getElementById('table-container');
+    const btnSave = document.getElementById('btn-save');
+    const btnShare = document.getElementById('btn-share');
+    const shareModal = document.getElementById('share-modal');
+    const shareClose = document.getElementById('share-close');
+    const sharePreview = document.getElementById('share-preview');
     
     // Initialize
     function init() {
@@ -947,6 +1110,47 @@
         renderTable();
       });
       
+      // Save table as image
+      btnSave.addEventListener('click', () => {
+        captureTableAsImage().then(dataUrl => {
+          const link = document.createElement('a');
+          link.download = `kiminini-premier-league-${new Date().toISOString().slice(0, 10)}.png`;
+          link.href = dataUrl;
+          link.click();
+          showToast('Table saved successfully', 'success');
+        }).catch(err => {
+          console.error('Error saving table:', err);
+          showToast('Failed to save table', 'error');
+        });
+      });
+      
+      // Share table
+      btnShare.addEventListener('click', () => {
+        captureTableAsImage().then(dataUrl => {
+          shareImageData = dataUrl;
+          
+          // Show preview in modal
+          sharePreview.innerHTML = `<img src="${dataUrl}" alt="League Standings">`;
+          shareModal.classList.add('active');
+        }).catch(err => {
+          console.error('Error sharing table:', err);
+          showToast('Failed to prepare table for sharing', 'error');
+        });
+      });
+      
+      // Close share modal
+      shareClose.addEventListener('click', () => {
+        shareModal.classList.remove('active');
+      });
+      
+      // Share options
+      document.querySelectorAll('.share-option').forEach(option => {
+        option.addEventListener('click', () => {
+          const platform = option.dataset.platform;
+          shareToPlatform(platform);
+        });
+      });
+      
       // Add fixture
       document.getElementById('add-fixture-btn').addEventListener('click', () => {
         const teamA = teamASelect.value;
@@ -1153,6 +1357,105 @@
           saveData();
         }
       });
+    }
+    
+    // Capture table as image
+    function captureTableAsImage() {
+      return new Promise((resolve, reject) => {
+        // Temporarily remove edit mode classes for cleaner screenshot
+        const wasEditMode = editMode;
+        if (editMode) {
+          tableContainer.classList.remove('edit-mode');
+          renderTable();
+        }
+        
+        html2canvas(tableContainer, {
+          backgroundColor: '#ffffff',
+          scale: 2, // Higher resolution
+          logging: false
+        }).then(canvas => {
+          // Restore edit mode if it was active
+          if (wasEditMode) {
+            tableContainer.classList.add('edit-mode');
+            renderTable();
+          }
+          
+          resolve(canvas.toDataURL('image/png'));
+        }).catch(err => {
+          // Restore edit mode if it was active
+          if (wasEditMode) {
+            tableContainer.classList.add('edit-mode');
+            renderTable();
+          }
+          
+          reject(err);
+        });
+      });
+    }
+    
+    // Share to platform
+    function shareToPlatform(platform) {
+      if (!shareImageData) return;
+      
+      // Convert data URL to blob
+      fetch(shareImageData)
+        .then(res => res.blob())
+        .then(blob => {
+          const file = new File([blob], 'kiminini-premier-league.png', { type: 'image/png' });
+          
+          if (platform === 'download') {
+            // Download the image
+            const link = document.createElement('a');
+            link.download = `kiminini-premier-league-${new Date().toISOString().slice(0, 10)}.png`;
+            link.href = shareImageData;
+            link.click();
+            showToast('Image downloaded successfully', 'success');
+          } else if (navigator.share && navigator.canShare({ files: [file] })) {
+            // Use Web Share API if available
+            const shareData = {
+              title: 'Kiminini Premier League Standings',
+              text: 'Check out the current league standings!',
+              files: [file]
+            };
+            
+            navigator.share(shareData)
+              .then(() => {
+                showToast('Shared successfully', 'success');
+              })
+              .catch(err => {
+                console.error('Error sharing:', err);
+                showToast('Sharing cancelled', 'warning');
+              });
+          } else {
+            // Fallback to direct links for social platforms
+            let shareUrl = '';
+            const text = encodeURIComponent('Check out the Kiminini Premier League standings!');
+            
+            switch (platform) {
+              case 'whatsapp':
+                shareUrl = `https://wa.me/?text=${text}`;
+                break;
+              case 'facebook':
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${text}`;
+                break;
+              case 'twitter':
+                shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`;
+                break;
+            }
+            
+            if (shareUrl) {
+              window.open(shareUrl, '_blank');
+              showToast('Opening share dialog...', 'success');
+            }
+          }
+          
+          // Close modal
+          shareModal.classList.remove('active');
+        })
+        .catch(err => {
+          console.error('Error sharing:', err);
+          showToast('Failed to share', 'error');
+        });
     }
     
     // Start editing a cell (non-edit mode)
