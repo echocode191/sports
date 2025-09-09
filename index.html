@@ -24,6 +24,9 @@
       --orange:#e07a2f;
       --border: #d0e7d6;
       --edit: #4285f4;
+      --gold: #FFD700;
+      --silver: #C0C0C0;
+      --bronze: #CD7F32;
     }
     
     * {
@@ -639,92 +642,146 @@
       cursor: pointer;
     }
     
-    /* Image Export Container */
+    /* Image Export Container - Mobile First Design */
     .export-container {
       display: none;
       background: white;
-      padding: 30px;
+      padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      max-width: 800px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 100%;
       margin: 0 auto;
+      border: 1px solid rgba(11,138,62,0.1);
+      overflow: hidden;
     }
     
     .export-header {
       text-align: center;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
       border-bottom: 2px solid var(--green);
     }
     
     .export-title {
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 800;
       color: var(--green);
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
     
     .export-subtitle {
-      font-size: 16px;
+      font-size: 14px;
       color: var(--muted);
+      margin-bottom: 2px;
     }
     
     .export-date {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--muted);
-      margin-top: 5px;
+      font-style: italic;
+    }
+    
+    .export-table-container {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 10px;
     }
     
     .export-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 20px;
+      font-size: 12px;
     }
     
     .export-table th {
-      background-color: var(--green);
+      background: var(--green);
       color: white;
-      padding: 12px 8px;
+      padding: 8px 4px;
       text-align: center;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .export-table td {
-      padding: 10px 8px;
+      padding: 6px 4px;
       text-align: center;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 11px;
+    }
+    
+    .export-table tr:last-child td {
+      border-bottom: none;
     }
     
     .export-table .team-name {
       text-align: left;
       font-weight: 600;
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
     }
     
     .export-table .team-position {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 24px;
-      height: 24px;
-      background-color: var(--green);
-      color: white;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
-      margin-right: 8px;
-      font-size: 12px;
+      margin-right: 6px;
+      font-size: 10px;
       font-weight: 700;
+      flex-shrink: 0;
     }
     
-    .export-table .top-3 .team-position {
-      background: linear-gradient(135deg, #f0ad4e, #d9534f);
+    .export-table .position-1 .team-position {
+      background: var(--gold);
+      color: var(--dark);
+    }
+    
+    .export-table .position-2 .team-position {
+      background: var(--silver);
+      color: var(--dark);
+    }
+    
+    .export-table .position-3 .team-position {
+      background: var(--bronze);
+      color: white;
+    }
+    
+    .export-table .position-other .team-position {
+      background-color: var(--green);
+      color: white;
+    }
+    
+    .export-table .position-1 {
+      background-color: rgba(255, 215, 0, 0.1);
+    }
+    
+    .export-table .position-2 {
+      background-color: rgba(192, 192, 192, 0.1);
+    }
+    
+    .export-table .position-3 {
+      background-color: rgba(205, 127, 50, 0.1);
+    }
+    
+    .export-table .points {
+      font-weight: 700;
+      font-size: 12px;
     }
     
     .export-footer {
       text-align: center;
-      font-size: 12px;
+      font-size: 10px;
       color: var(--muted);
-      margin-top: 20px;
-      padding-top: 15px;
+      margin-top: 10px;
+      padding-top: 8px;
       border-top: 1px solid var(--border);
     }
     
@@ -765,6 +822,38 @@
       .add-fixture select {
         flex: 0 1 auto;
       }
+      
+      .export-container {
+        padding: 25px;
+        max-width: 90%;
+      }
+      
+      .export-title {
+        font-size: 28px;
+      }
+      
+      .export-subtitle {
+        font-size: 18px;
+      }
+      
+      .export-table {
+        font-size: 13px;
+      }
+      
+      .export-table th {
+        padding: 10px 6px;
+        font-size: 12px;
+      }
+      
+      .export-table td {
+        padding: 8px 6px;
+        font-size: 12px;
+      }
+      
+      .export-table .team-name {
+        font-size: 12px;
+        max-width: 150px;
+      }
     }
     
     @media (min-width: 1024px) {
@@ -778,6 +867,38 @@
       
       .fixtures-section {
         margin: 20px 0;
+      }
+      
+      .export-container {
+        padding: 30px;
+        max-width: 800px;
+      }
+      
+      .export-title {
+        font-size: 32px;
+      }
+      
+      .export-subtitle {
+        font-size: 22px;
+      }
+      
+      .export-table {
+        font-size: 14px;
+      }
+      
+      .export-table th {
+        padding: 12px 8px;
+        font-size: 13px;
+      }
+      
+      .export-table td {
+        padding: 10px 8px;
+        font-size: 13px;
+      }
+      
+      .export-table .team-name {
+        font-size: 13px;
+        max-width: 200px;
       }
     }
   </style>
@@ -891,25 +1012,27 @@
       <p class="export-date" id="export-date"></p>
     </div>
     
-    <table class="export-table" id="export-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Club</th>
-          <th>P</th>
-          <th>W</th>
-          <th>D</th>
-          <th>L</th>
-          <th>F</th>
-          <th>A</th>
-          <th>GD</th>
-          <th>Pts</th>
-        </tr>
-      </thead>
-      <tbody id="export-tbody">
-        <!-- Export table rows will be generated by JavaScript -->
-      </tbody>
-    </table>
+    <div class="export-table-container">
+      <table class="export-table" id="export-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Club</th>
+            <th>P</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>F</th>
+            <th>A</th>
+            <th>GD</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody id="export-tbody">
+          <!-- Export table rows will be generated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
     
     <div class="export-footer">
       <p>Generated on <span id="export-footer-date"></span> | Kiminini Premier League</p>
@@ -1162,9 +1285,9 @@
       // Set current date
       const now = new Date();
       const dateString = now.toLocaleDateString('en-US', { 
-        weekday: 'long', 
+        weekday: 'short', 
         year: 'numeric', 
-        month: 'long', 
+        month: 'short', 
         day: 'numeric' 
       });
       exportDate.textContent = dateString;
@@ -1173,7 +1296,17 @@
       // Render rows
       teams.forEach((team, index) => {
         const row = document.createElement('tr');
-        if (index < 3) row.classList.add('top-3');
+        
+        // Add position class for styling
+        if (index === 0) {
+          row.classList.add('position-1');
+        } else if (index === 1) {
+          row.classList.add('position-2');
+        } else if (index === 2) {
+          row.classList.add('position-3');
+        } else {
+          row.classList.add('position-other');
+        }
         
         row.innerHTML = `
           <td>${index + 1}</td>
@@ -1188,7 +1321,7 @@
           <td>${team.goalsFor}</td>
           <td>${team.goalsAgainst}</td>
           <td>${team.goalDifference}</td>
-          <td><strong>${team.points}</strong></td>
+          <td class="points">${team.points}</td>
         `;
         
         exportTableBody.appendChild(row);
@@ -1585,17 +1718,19 @@
       return new Promise((resolve, reject) => {
         const options = {
           backgroundColor: format === 'jpg' ? '#ffffff' : null,
-          scale: 3, // Higher resolution
+          scale: 2, // Reduced scale for smaller file size
           logging: false,
-          useCORS: true
+          useCORS: true,
+          width: exportContainer.scrollWidth,
+          height: exportContainer.scrollHeight
         };
         
         if (format === 'jpg') {
-          options.quality = 0.9;
+          options.quality = 0.8; // Reduced quality for smaller file size
         }
         
         html2canvas(exportContainer, options).then(canvas => {
-          resolve(canvas.toDataURL(`image/${format}`, format === 'jpg' ? 0.9 : 1.0));
+          resolve(canvas.toDataURL(`image/${format}`, format === 'jpg' ? 0.8 : 1.0));
         }).catch(err => {
           reject(err);
         });
