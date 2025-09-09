@@ -647,7 +647,7 @@
       display: none;
       background: white;
       width: 360px;
-      height: 640px;
+      min-height: 1000px;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -688,8 +688,6 @@
       border-radius: 8px;
       overflow: hidden;
       margin-bottom: 10px;
-      height: 480px;
-      overflow-y: auto;
     }
     
     .export-table {
@@ -727,10 +725,11 @@
       text-align: left;
       font-weight: 600;
       font-size: 9px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 80px;
+      white-space: normal;
+      word-wrap: break-word;
+      max-width: 120px;
+      line-height: 1.2;
+      padding: 5px 3px;
     }
     
     .export-table .team-position {
@@ -792,16 +791,6 @@
       border-top: 1px solid var(--border);
     }
     
-    /* Square format option */
-    .export-container.square {
-      width: 500px;
-      height: 500px;
-    }
-    
-    .export-container.square .export-table-container {
-      height: 340px;
-    }
-    
     /* Mobile First Responsive */
     @media (min-width: 768px) {
       .container {
@@ -839,6 +828,10 @@
       .add-fixture select {
         flex: 0 1 auto;
       }
+      
+      .export-container {
+        width: 400px;
+      }
     }
     
     @media (min-width: 1024px) {
@@ -852,6 +845,10 @@
       
       .fixtures-section {
         margin: 20px 0;
+      }
+      
+      .export-container {
+        width: 450px;
       }
     }
   </style>
@@ -1260,17 +1257,11 @@
           row.classList.add('position-other');
         }
         
-        // Shorten team names for export
-        let shortName = team.name;
-        if (shortName.length > 18) {
-          shortName = shortName.substring(0, 15) + '...';
-        }
-        
         row.innerHTML = `
           <td>${index + 1}</td>
           <td class="team-name">
             <span class="team-position">${index + 1}</span>
-            ${shortName}
+            ${team.name}
           </td>
           <td>${team.played}</td>
           <td>${team.won}</td>
@@ -1284,6 +1275,10 @@
         
         exportTableBody.appendChild(row);
       });
+      
+      // Calculate the required height to show all rows
+      const tableHeight = exportTableBody.offsetHeight + 50; // 50px for header
+      exportContainer.style.minHeight = `${tableHeight + 100}px`; // 100px for header and footer
     }
     
     // Render fixtures
@@ -1407,7 +1402,6 @@
       btnSave.addEventListener('click', () => {
         renderExportTable();
         exportContainer.style.display = 'block';
-        exportContainer.classList.remove('square');
         
         const format = document.querySelector('input[name="format"]:checked').value;
         
@@ -1432,7 +1426,6 @@
       btnShare.addEventListener('click', () => {
         renderExportTable();
         exportContainer.style.display = 'block';
-        exportContainer.classList.remove('square');
         
         const format = document.querySelector('input[name="format"]:checked').value;
         
