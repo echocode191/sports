@@ -3,15 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Kiminini Premier League - Live standings, fixtures, and results" />
+  <meta name="description" content="Kiminini Premier League - Live standings with easy editing" />
   <meta name="theme-color" content="#0b8a3e" />
-  <title>Kiminini Premier League — Live (Local)</title>
+  <title>Kiminini Premier League — Editable Standings</title>
   
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  
-  <!-- html2canvas for export -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
   <style>
     :root{
@@ -19,129 +16,129 @@
       --light:#e9fff0;
       --accent:#12b24a;
       --muted:#6b6b6b;
-      --glass: rgba(255,255,255,0.9);
       --dark:#063d1f;
       --shadow: rgba(6,80,34,0.12);
       --orange:#e07a2f;
+      --border: #d0e7d6;
+      --edit: #4285f4;
     }
     
-    *{box-sizing:border-box}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     
-    body{
-      margin:0; 
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(135deg,#eaf9ee 0%, #f0fcf4 50%, #ffffff 100%);
-      color:var(--dark);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding-bottom:60px;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #f0fcf4 0%, #ffffff 100%);
+      color: var(--dark);
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-bottom: 70px;
       min-height: 100vh;
     }
     
-    header{
-      background: linear-gradient(90deg,var(--green), #0f7b39);
-      color:white; 
-      padding:24px 16px; 
-      text-align:center;
-      box-shadow: 0 6px 18px rgba(11,138,62,0.15);
-      position:sticky; 
-      top:0; 
-      z-index:20;
-      animation: slideDown .6s ease;
+    header {
+      background: linear-gradient(90deg, var(--green), #0f7b39);
+      color: white;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(11,138,62,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 20;
     }
     
-    header h1 { 
-      margin:0; 
-      font-size:24px; 
-      letter-spacing:1px;
+    header h1 {
+      font-size: 20px;
       font-weight: 800;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 4px;
     }
     
-    header p { 
-      margin:6px 0 0; 
-      opacity:0.95; 
-      font-size:14px;
-      font-weight: 500;
+    header p {
+      font-size: 14px;
+      opacity: 0.9;
     }
     
-    .wrap { 
-      max-width:1100px; 
-      margin:18px auto; 
-      padding:0 14px; 
+    .container {
+      max-width: 100%;
+      padding: 0 12px;
+      margin: 0 auto;
     }
     
-    /* table */
-    #table-container {
-      background:var(--glass); 
-      border-radius:16px; 
-      padding:16px;
-      box-shadow: 0 10px 30px var(--shadow);
-      backdrop-filter: blur(10px);
-      transition: transform .25s ease, box-shadow .25s ease;
-      border: 1px solid rgba(11,138,62,0.1);
+    /* Table Styles - Ruled Design */
+    .table-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
       overflow: hidden;
+      margin: 16px 0;
+      border: 1px solid var(--border);
     }
     
-    #table-container:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 35px var(--shadow);
+    .table-header {
+      background-color: var(--green);
+      color: white;
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     
-    table { 
-      width:100%; 
-      border-collapse:collapse; 
-      font-weight:600;
+    .table-wrapper {
+      overflow-x: auto;
     }
     
-    thead th{
-      background:linear-gradient(90deg,var(--green), #0b6e33); 
-      color:white; 
-      padding:14px 10px; 
-      font-size:14px;
-      text-align:center; 
-      border-right: 1px solid rgba(255,255,255,0.06);
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
     }
     
-    thead th:first-child {
-      border-top-left-radius: 8px;
+    thead th {
+      background-color: #f8f8f8;
+      padding: 12px 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--dark);
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
     
-    thead th:last-child {
-      border-top-right-radius: 8px;
-      border-right: none;
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background-color 0.2s;
     }
     
-    tbody td { 
-      padding:12px 8px; 
-      text-align:center; 
-      border-bottom:1px solid rgba(0,0,0,0.04); 
-      font-weight:700;
-      transition: all 0.2s ease;
-    }
-    
-    tbody tr:last-child td {
+    tbody tr:last-child {
       border-bottom: none;
     }
     
-    tbody tr:nth-child(odd) td { 
-      background: rgba(11,138,62,0.02); 
+    tbody tr:hover {
+      background-color: var(--light);
     }
     
-    tbody tr:hover td { 
-      background: var(--light); 
-      transform: translateY(-1px); 
-      transition: all 0.15s ease;
+    tbody td {
+      padding: 12px 8px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      position: relative;
     }
     
-    td.name { 
-      text-align:left; 
-      padding-left:14px; 
-      font-weight:800; 
-      color:var(--dark);
+    tbody td:last-child {
+      border-right: none;
+    }
+    
+    .team-name {
+      text-align: left !important;
+      font-weight: 600;
       display: flex;
       align-items: center;
     }
@@ -155,236 +152,139 @@
       background-color: var(--green);
       color: white;
       border-radius: 50%;
-      margin-right: 10px;
+      margin-right: 8px;
       font-size: 12px;
       font-weight: 700;
+      flex-shrink: 0;
     }
     
     .top-3 .team-position {
       background: linear-gradient(135deg, #f0ad4e, #d9534f);
     }
     
-    td.editable:hover { 
-      outline: 2px dashed rgba(18,178,74,0.3); 
+    .editable {
       cursor: pointer;
-      background-color: rgba(18,178,74,0.1);
+      position: relative;
     }
     
-    .controls{ 
-      display:flex; 
-      gap:12px; 
-      align-items:center; 
-      justify-content:space-between; 
-      margin:16px 0; 
-      flex-wrap:wrap;
-      background: white;
-      padding: 16px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    .editable::after {
+      content: '\f303';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      color: var(--edit);
+      opacity: 0;
+      transition: opacity 0.2s;
     }
     
-    .left, .right { 
-      display:flex; 
-      gap:10px; 
-      align-items:center; 
+    .editable:hover::after {
+      opacity: 0.7;
+    }
+    
+    .editing {
+      background-color: rgba(66, 133, 244, 0.1);
+    }
+    
+    .edit-input {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid var(--edit);
+      border-radius: 4px;
+      font-size: 14px;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .edit-input.text-input {
+      text-align: left;
+    }
+    
+    .edit-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    
+    /* Controls */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0;
+      justify-content: space-between;
+      align-items: center;
     }
     
     .btn {
-      background:var(--green); 
-      color:white; 
-      padding:10px 16px; 
-      border-radius:8px; 
-      border:none; 
-      cursor:pointer;
-      box-shadow: 0 6px 14px rgba(11,138,62,0.12); 
-      font-weight:700;
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-weight: 600;
       font-size: 14px;
-      transition: all 0.2s ease;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
     
     .btn:hover {
       background: #0a7a36;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 16px rgba(11,138,62,0.18);
     }
     
-    .btn:active {
-      transform: translateY(0);
-    }
-    
-    .btn i {
-      font-size: 14px;
-    }
-    
-    .btn.ghost { 
-      background:transparent; 
-      color:var(--green); 
-      border:1px solid rgba(11,138,62,0.14); 
-      box-shadow:none;
+    .btn.ghost {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid var(--green);
     }
     
     .btn.ghost:hover {
       background: rgba(11,138,62,0.05);
     }
     
-    .btn.warn { 
-      background:var(--orange); 
-      box-shadow: none;
+    .btn.warn {
+      background: var(--orange);
     }
     
     .btn.warn:hover {
       background: #d0681f;
     }
     
-    .small { 
-      padding:8px 12px; 
-      font-size:13px; 
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      justify-content: center;
+      border-radius: 50%;
     }
     
-    .fixtures { 
-      margin-top:24px; 
-      background: #fff; 
-      border-radius:12px; 
-      padding:16px; 
-      box-shadow:0 8px 20px rgba(6,80,34,0.04);
-      border: 1px solid rgba(11,138,62,0.08);
+    .admin-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
     }
     
-    .fixtures h2 { 
-      margin:0 0 12px 0; 
-      font-size:18px; 
-      color:var(--green);
+    .admin-status {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--muted);
     }
     
-    .fixtures-list { 
-      list-style:none; 
-      padding:0; 
-      margin:0; 
-      display:flex; 
-      flex-direction:column; 
-      gap:10px; 
-    }
-    
-    .fixture {
-      display:flex; 
-      align-items:center; 
-      justify-content:space-between; 
-      gap:10px; 
-      padding:12px; 
-      border-radius:10px;
-      border:1px solid rgba(6,80,34,0.04);
-      background: #fff;
-      transition: all 0.2s ease;
-    }
-    
-    .fixture:hover {
-      border-color: rgba(11,138,62,0.2);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-    
-    .fixture .left { 
-      display:flex; 
-      gap:12px; 
-      align-items:center; 
-    }
-    
-    .fixture .teams { 
-      font-weight:800; 
-      color:var(--dark); 
-      min-width:240px;
-      font-size: 15px;
-    }
-    
-    .fixture input[type="number"]{ 
-      width:60px; 
-      padding:8px; 
-      border-radius:6px; 
-      border:1px solid #ccc;
-      font-weight: 600;
-      text-align: center;
-    }
-    
-    .fixture .meta { 
-      color:var(--muted); 
-      font-size:13px;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 4px;
-    }
-    
-    .fixture .meta.played {
-      background: rgba(11,138,62,0.1);
-      color: var(--green);
-    }
-    
-    label { 
-      font-weight:700; 
-      color:var(--green); 
-      margin-right:6px; 
-    }
-    
-    .admin-section { 
-      display:none; 
-      margin-top:16px; 
-      background:#f3fff5; 
-      border-radius:10px; 
-      padding:16px; 
-      border:1px solid rgba(11,138,62,0.08);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.03);
-    }
-    
-    .admin-section p {
-      margin: 8px 0;
-      line-height: 1.5;
-    }
-    
-    .muted { 
-      color:var(--muted); 
-      font-weight:600; 
-      font-size:13px 
-    }
-    
-    .center { 
-      text-align:center 
-    }
-    
-    footer { 
-      margin-top:24px; 
-      text-align:center; 
-      color:var(--muted); 
-      font-size:13px;
-      padding: 16px;
-    }
-    
-    @keyframes slideDown { 
-      from { 
-        transform:translateY(-18px); 
-        opacity:0 
-      } 
-      to { 
-        transform:none; 
-        opacity:1 
-      } 
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    /* Status indicator */
     .status-indicator {
       display: inline-block;
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      margin-right: 6px;
     }
     
     .status-indicator.locked {
@@ -393,40 +293,132 @@
     
     .status-indicator.unlocked {
       background-color: #4caf50;
-      animation: pulse 2s infinite;
     }
     
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
-      70% { box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+    /* Fixtures Section */
+    .fixtures-section {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
     }
     
-    /* small screens */
-    @media (max-width:720px){
-      header h1 { font-size: 20px; }
-      header p { font-size: 12px; }
-      
-      .controls { padding: 12px; gap: 8px; }
-      .btn { padding: 8px 12px; font-size: 13px; }
-      
-      td.name { 
-        font-size:14px;
-        padding-left: 8px;
-      }
-      
-      thead th:nth-child(1), tbody td:nth-child(1) { display:none }
-      thead th:nth-child(7), thead th:nth-child(8) { display:none }
-      table { font-size:12px }
-      .fixture .teams { min-width:160px; font-size: 14px; }
-      .fixture input[type="number"] { width: 50px; padding: 6px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     
-    /* Toast notification */
+    .add-fixture {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+    
+    .add-fixture select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .fixture-list {
+      list-style: none;
+    }
+    
+    .fixture-item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    
+    .fixture-teams {
+      font-weight: 600;
+      flex: 2;
+      min-width: 200px;
+    }
+    
+    .fixture-score {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .fixture-score input {
+      width: 50px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .fixture-actions {
+      display: flex;
+      gap: 6px;
+    }
+    
+    .fixture-status {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    
+    .fixture-status.played {
+      background: rgba(11,138,62,0.1);
+      color: var(--green);
+    }
+    
+    /* Admin Panel */
+    .admin-panel {
+      display: none;
+      background: var(--light);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+      border: 1px solid var(--accent);
+    }
+    
+    .admin-panel.active {
+      display: block;
+    }
+    
+    .admin-panel p {
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    
+    /* Toast Notification */
     .toast {
       position: fixed;
       bottom: 20px;
-      right: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       background: var(--dark);
       color: white;
       padding: 12px 20px;
@@ -434,15 +426,14 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       display: flex;
       align-items: center;
-      gap: 10px;
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s ease;
+      gap: 8px;
       z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+      max-width: 90%;
     }
     
     .toast.show {
-      transform: translateY(0);
       opacity: 1;
     }
     
@@ -458,727 +449,760 @@
       background: var(--orange);
     }
     
-    /* Loading spinner */
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s ease-in-out infinite;
+    /* Edit Mode Indicator */
+    .edit-mode-indicator {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--edit);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 100;
     }
     
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .edit-mode-indicator.active {
+      display: flex;
     }
     
-    /* Edit mode styles */
-    .admin-editable {
-      position: relative;
+    /* Mobile First Responsive */
+    @media (min-width: 768px) {
+      .container {
+        max-width: 768px;
+      }
+      
+      header h1 {
+        font-size: 24px;
+      }
+      
+      table {
+        font-size: 15px;
+      }
+      
+      thead th {
+        padding: 14px 10px;
+      }
+      
+      tbody td {
+        padding: 14px 10px;
+      }
+      
+      .controls {
+        justify-content: space-between;
+      }
+      
+      .admin-controls {
+        flex-wrap: nowrap;
+      }
+      
+      .add-fixture {
+        flex-wrap: nowrap;
+      }
+      
+      .add-fixture select {
+        flex: 0 1 auto;
+      }
     }
     
-    .admin-editable::after {
-      content: '\f303';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      right: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 10px;
-      color: var(--green);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    
-    .admin-editable:hover::after {
-      opacity: 0.7;
-    }
-    
-    /* Last updated indicator */
-    .last-updated {
-      font-size: 12px;
-      color: var(--muted);
-      text-align: right;
-      margin-top: 8px;
+    @media (min-width: 1024px) {
+      .container {
+        max-width: 1024px;
+      }
+      
+      .table-container {
+        margin: 20px 0;
+      }
+      
+      .fixtures-section {
+        margin: 20px 0;
+      }
     }
   </style>
 </head>
 <body>
-<header>
-  <h1>Kiminini Premier League</h1>
-  <p>Live (Local) — editable & persistent in this browser</p>
-</header>
-
-<div class="wrap">
-  <div class="controls">
-    <div class="left">
-      <div>
-        <label for="admin-pass" class="muted">Admin password:</label>
-        <input id="admin-pass" type="password" placeholder="Enter admin password" />
-        <button class="btn small" id="btn-login">
-          <i class="fas fa-lock"></i> Unlock
+  <header>
+    <h1>Kiminini Premier League</h1>
+    <p>Live Standings & Results</p>
+  </header>
+  
+  <div class="container">
+    <div class="controls">
+      <div class="admin-controls">
+        <input type="password" id="admin-pass" placeholder="Admin password" style="padding: 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; flex: 1; min-width: 150px;">
+        <button class="btn" id="btn-login">
+          <i class="fas fa-lock"></i> Login
+        </button>
+        <button class="btn ghost" id="btn-reset">
+          <i class="fas fa-redo"></i> Reset
+        </button>
+        <button class="btn ghost" id="btn-clear">
+          <i class="fas fa-trash"></i> Clear
         </button>
       </div>
-      <button class="btn ghost small" id="btn-reset" title="Reset to seeded data">
-        <i class="fas fa-redo"></i> Reset to seed
-      </button>
-      <button class="btn ghost small" id="btn-clear" title="Clear all data (table & fixtures)">
-        <i class="fas fa-trash"></i> Clear All
-      </button>
-    </div>
-    <div class="right">
-      <button class="btn small" id="btn-export">
-        <i class="fas fa-download"></i> Export PNG
-      </button>
-      <button class="btn small" id="btn-share">
-        <i class="fas fa-share-alt"></i> Share
-      </button>
-      <div class="muted">Admin mode: <span id="admin-ind"><span class="status-indicator locked"></span>locked</span></div>
-    </div>
-  </div>
-  
-  <div id="table-container" aria-live="polite">
-    <table id="league-table" role="table">
-      <thead>
-        <tr>
-          <th>#</th><th>Club</th><th>P</th><th>W</th><th>D</th><th>L</th><th>F</th><th>A</th><th>GD</th><th>Pts</th>
-        </tr>
-      </thead>
-      <tbody id="table-body"></tbody>
-    </table>
-    <div class="last-updated" id="last-updated">Last updated: Never</div>
-  </div>
-  
-  <div class="fixtures" id="fixtures-area">
-    <h2><i class="fas fa-calendar-alt"></i> Fixtures</h2>
-    <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap: wrap;">
-      <select id="addA" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;"></select>
-      <div style="font-weight:800;color:var(--muted)">vs</div>
-      <select id="addB" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;"></select>
-      <button class="btn" id="add-fixture">
-        <i class="fas fa-plus"></i> Add Fixture
-      </button>
-    </div>
-    <ul class="fixtures-list" id="fixtures-list"></ul>
-    <div class="admin-section" id="admin-tools">
-      <p class="muted"><i class="fas fa-info-circle"></i> Click a table cell to edit (double-click) when admin unlocked. For W/D/L/F/A edits the system recomputes P, GD, Pts.</p>
-      <p class="muted"><i class="fas fa-info-circle"></i> When marking a fixture "Played" make sure scores are set; the system will update team stats automatically.</p>
-    </div>
-  </div>
-  
-  <footer>
-    <div class="muted">Double-click a cell to edit (admin only). Changes saved locally.</div>
-  </footer>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-/* ============================
-   Editable / Local Storage App
-   ============================ */
-const STORAGE_TABLE = 'kpl_table_v1';
-const STORAGE_FIXTURES = 'kpl_fixtures_v1';
-const STORAGE_LAST_UPDATED = 'kpl_last_updated';
-const ADMIN_PASS = '2030';
-
-// Seed data from screenshot
-const SEED = [
-  {name:"Kiminini Legends FC", P:34,W:29,D:3,L:2,F:101,A:32,GD:69,Pts:90},
-  {name:"Hilario Allstars FC", P:34,W:27,D:5,L:2,F:98,A:16,GD:82,Pts:86},
-  {name:"Kiminini Stars FC", P:34,W:24,D:5,L:5,F:88,A:33,GD:55,Pts:77},
-  {name:"Small Tigers FC", P:34,W:22,D:5,L:7,F:80,A:40,GD:40,Pts:71},
-  {name:"Samba FC", P:34,W:21,D:4,L:9,F:67,A:29,GD:38,Pts:67},
-  {name:"Royal Bullets FC", P:34,W:18,D:6,L:10,F:89,A:47,GD:42,Pts:60},
-  {name:"Namawanga FC", P:34,W:17,D:8,L:9,F:78,A:49,GD:29,Pts:59},
-  {name:"Kiminini United FC", P:34,W:17,D:7,L:10,F:78,A:41,GD:37,Pts:58},
-  {name:"Konoin Legends FC", P:34,W:16,D:7,L:11,F:67,A:55,GD:12,Pts:55},
-  {name:"Intermiami FC", P:34,W:16,D:7,L:11,F:65,A:55,GD:10,Pts:55},
-  {name:"Kiminini V. College", P:34,W:11,D:7,L:16,F:52,A:70,GD:-18,Pts:40},
-  {name:"Roadblock FC", P:34,W:10,D:7,L:17,F:66,A:75,GD:-9,Pts:37},
-  {name:"Sabata FC", P:33,W:9,D:7,L:17,F:41,A:68,GD:-27,Pts:34},
-  {name:"Bukwet FC", P:34,W:10,D:4,L:20,F:38,A:70,GD:-32,Pts:34},
-  {name:"Baraton Allstars FC", P:34,W:10,D:4,L:20,F:41,A:85,GD:-44,Pts:34},
-  {name:"14 Brothers FC", P:34,W:7,D:5,L:22,F:43,A:85,GD:-42,Pts:26},
-  {name:"Mitoto FC", P:34,W:6,D:7,L:21,F:40,A:68,GD:-28,Pts:25},
-  {name:"Wazoefu FC", P:34,W:6,D:7,L:21,F:43,A:88,GD:-45,Pts:25},
-  {name:"Kiminini Rangers FC", P:34,W:5,D:5,L:24,F:52,A:107,GD:-55,Pts:20},
-  {name:"Home United FC", P:33,W:1,D:4,L:28,F:22,A:136,GD:-114,Pts:7}
-];
-
-// App state
-let teams = [];
-let fixtures = [];
-let isAdmin = false;
-let lastUpdated = null;
-
-/* ---------- storage helpers ---------- */
-function saveStorage(){
-  try {
-    localStorage.setItem(STORAGE_TABLE, JSON.stringify(teams));
-    localStorage.setItem(STORAGE_FIXTURES, JSON.stringify(fixtures));
-    lastUpdated = new Date();
-    localStorage.setItem(STORAGE_LAST_UPDATED, lastUpdated.toISOString());
-    updateLastUpdatedDisplay();
-  } catch (e) {
-    console.error('Error saving to localStorage:', e);
-    showToast('Failed to save data. Storage may be full.', 'error');
-  }
-}
-
-function loadStorage(){
-  const t = localStorage.getItem(STORAGE_TABLE);
-  const f = localStorage.getItem(STORAGE_FIXTURES);
-  const lu = localStorage.getItem(STORAGE_LAST_UPDATED);
-  
-  if(t && f){
-    try {
-      teams = JSON.parse(t);
-      fixtures = JSON.parse(f);
-      if (lu) {
-        lastUpdated = new Date(lu);
-        updateLastUpdatedDisplay();
-      }
-      return true;
-    } catch(e){ 
-      console.warn('Corrupt local data, will reseed'); 
-      return false; 
-    }
-  }
-  return false;
-}
-
-function seedStorage(){
-  teams = JSON.parse(JSON.stringify(SEED));
-  fixtures = []; // start empty; admin can add
-  saveStorage();
-}
-
-function updateLastUpdatedDisplay() {
-  const element = document.getElementById('last-updated');
-  if (lastUpdated) {
-    element.textContent = `Last updated: ${lastUpdated.toLocaleString()}`;
-  } else {
-    element.textContent = 'Last updated: Never';
-  }
-}
-
-/* ---------- rendering ---------- */
-const tbody = document.getElementById('table-body');
-const fixturesList = document.getElementById('fixtures-list');
-const addA = document.getElementById('addA');
-const addB = document.getElementById('addB');
-
-function calcDerived(t){
-  // ensure numbers
-  t.W = Number(t.W)||0; 
-  t.D = Number(t.D)||0; 
-  t.L = Number(t.L)||0;
-  t.F = Number(t.F)||0; 
-  t.A = Number(t.A)||0;
-  t.P = t.W + t.D + t.L;
-  t.GD = t.F - t.A;
-  t.Pts = (t.W * 3) + t.D;
-}
-
-function renderTable(){
-  // ensure derived fields are accurate
-  teams.forEach(calcDerived);
-  
-  // sort by points, then GD, then F
-  teams.sort((a,b)=> b.Pts - a.Pts || b.GD - a.GD || b.F - a.F);
-  
-  tbody.innerHTML = '';
-  teams.forEach((t, idx) => {
-    const tr = document.createElement('tr');
-    tr.dataset.index = idx;
-    
-    // Add class for top 3 teams
-    if (idx < 3) {
-      tr.classList.add('top-3');
-    }
-    
-    tr.innerHTML = `
-      <td>${idx+1}</td>
-      <td class="name" data-key="name">
-        <span class="team-position">${idx+1}</span>
-        ${escapeHtml(t.name)}
-      </td>
-      <td class="editable" data-key="P">${t.P}</td>
-      <td class="editable" data-key="W">${t.W}</td>
-      <td class="editable" data-key="D">${t.D}</td>
-      <td class="editable" data-key="L">${t.L}</td>
-      <td class="editable" data-key="F">${t.F}</td>
-      <td class="editable" data-key="A">${t.A}</td>
-      <td data-key="GD">${t.GD}</td>
-      <td data-key="Pts">${t.Pts}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-  
-  populateTeamSelects();
-}
-
-/* ---------- fixtures rendering ---------- */
-function renderFixtures(){
-  fixturesList.innerHTML = '';
-  
-  if (fixtures.length === 0) {
-    fixturesList.innerHTML = '<li class="muted center">No fixtures added yet</li>';
-    return;
-  }
-  
-  fixtures.forEach((f, idx) => {
-    const li = document.createElement('li');
-    li.className = 'fixture';
-    li.dataset.index = idx;
-    li.innerHTML = `
-      <div class="left">
-        <div class="teams">${escapeHtml(f.teamA)} <strong style="color:var(--muted)">vs</strong> ${escapeHtml(f.teamB)}</div>
-        <div>
-          <input type="number" class="scoreA" value="${f.scoreA===null?'':f.scoreA}" min="0" placeholder="A" />
-        </div>
-        <div>-</div>
-        <div>
-          <input type="number" class="scoreB" value="${f.scoreB===null?'':f.scoreB}" min="0" placeholder="B" />
-        </div>
-        <div class="meta ${f.status === 'played' ? 'played' : ''}">${f.status === 'played' ? 'Played' : 'Upcoming'}</div>
+      
+      <div class="admin-status">
+        Admin: <span id="admin-status"><span class="status-indicator locked"></span> Locked</span>
       </div>
-      <div>
-        <button class="btn small play">${f.status==='played'?'Revoke':'Mark Played'}</button>
-        <button class="btn ghost small edit"><i class="fas fa-edit"></i></button>
-        <button class="btn ghost small del"><i class="fas fa-trash"></i></button>
-      </div>
-    `;
-    fixturesList.appendChild(li);
-  });
-}
-
-/* ---------- team selects ---------- */
-function populateTeamSelects(){
-  [addA, addB].forEach(sel => {
-    sel.innerHTML = '';
-    teams.forEach(t => {
-      const opt = document.createElement('option');
-      opt.value = t.name; 
-      opt.textContent = t.name;
-      sel.appendChild(opt);
-    });
-  });
-}
-
-/* ---------- helpers ---------- */
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function findTeamByName(name){ 
-  return teams.find(t => t.name === name); 
-}
-
-function showToast(message, type = 'success') {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.className = 'toast';
-  
-  if (type === 'success') {
-    toast.classList.add('success');
-  } else if (type === 'error') {
-    toast.classList.add('error');
-  } else if (type === 'warning') {
-    toast.classList.add('warning');
-  }
-  
-  toast.classList.add('show');
-  
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
-}
-
-/* ---------- ui interactions ---------- */
-document.getElementById('btn-login').addEventListener('click', ()=>{
-  const val = document.getElementById('admin-pass').value.trim();
-  if(val === ADMIN_PASS){
-    isAdmin = true;
-    document.getElementById('admin-ind').innerHTML = '<span class="status-indicator unlocked"></span>unlocked';
-    document.getElementById('admin-tools').style.display = 'block';
-    document.querySelectorAll('.editable, .name').forEach(el => el.classList.add('admin-editable'));
-    showToast('Admin unlocked — double-click any editable cell to modify.', 'success');
-    document.getElementById('admin-pass').value = '';
-  } else {
-    showToast('Wrong password', 'error');
-  }
-});
-
-// reset to seed
-document.getElementById('btn-reset').addEventListener('click', ()=>{
-  if(!confirm('Reset table & fixtures to original seeded values? This overwrites local changes.')) return;
-  seedStorage();
-  loadAndRender();
-  showToast('Data reset to seed values', 'success');
-});
-
-// clear all
-document.getElementById('btn-clear').addEventListener('click', ()=>{
-  if(!confirm('Clear ALL saved table & fixtures? This cannot be undone.')) return;
-  localStorage.removeItem(STORAGE_TABLE);
-  localStorage.removeItem(STORAGE_FIXTURES);
-  localStorage.removeItem(STORAGE_LAST_UPDATED);
-  teams = []; fixtures = []; lastUpdated = null;
-  renderTable(); renderFixtures(); updateLastUpdatedDisplay();
-  showToast('All data cleared. You can reset to seed if needed.', 'warning');
-});
-
-// double-click to edit cells (admin only)
-tbody.addEventListener('dblclick', (ev) => {
-  if(!isAdmin) return;
-  const td = ev.target.closest('td');
-  if(!td) return;
-  const key = td.dataset.key;
-  if(!key) return;
-  // only allow editing for certain keys
-  if(!['name','W','D','L','F','A','P'].includes(key)) return;
-  td.contentEditable = 'true';
-  td.focus();
-  // select text
-  document.getSelection().collapse(td.firstChild, 0);
-});
-
-// when editing ends, save
-tbody.addEventListener('blur', (ev) => {
-  const td = ev.target.closest('td');
-  if(!td || td.contentEditable !== 'true') return;
-  td.contentEditable = 'false';
-  const tr = td.parentElement;
-  const idx = Number(tr.dataset.index);
-  const key = td.dataset.key;
-  let val = td.textContent.trim();
-  // if editing name allow string
-  if(key === 'name'){
-    teams[idx].name = val || teams[idx].name;
-  } else {
-    // numbers
-    const n = parseInt(val, 10);
-    teams[idx][key] = isNaN(n) ? 0 : n;
-  }
-  // recalc derived fields
-  calcDerived(teams[idx]);
-  saveStorage();
-  renderTable();
-  showToast('Table updated', 'success');
-}, true);
-
-// pressing Enter while editing commits and blurs
-tbody.addEventListener('keydown', (ev) => {
-  const td = ev.target.closest('td');
-  if(!td || td.contentEditable !== 'true') return;
-  if(ev.key === 'Enter'){
-    ev.preventDefault();
-    td.blur();
-  }
-});
-
-// add fixture
-document.getElementById('add-fixture').addEventListener('click', ()=>{
-  if(!isAdmin){ 
-    showToast('Admin only', 'error'); 
-    return; 
-  }
-  const teamA = addA.value, teamB = addB.value;
-  if(!teamA || !teamB) return;
-  if(teamA === teamB){ 
-    showToast('Select two different teams', 'error'); 
-    return; 
-  }
-  fixtures.push({ 
-    teamA, 
-    teamB, 
-    scoreA: null, 
-    scoreB: null, 
-    status: 'upcoming', 
-    id: Date.now() + Math.random() 
-  });
-  saveStorage(); 
-  renderFixtures();
-  showToast('Fixture added', 'success');
-  
-  // Reset selects
-  addA.selectedIndex = 0;
-  addB.selectedIndex = 0;
-});
-
-// fixtures list actions (delegation)
-fixturesList.addEventListener('click', (ev)=>{
-  const li = ev.target.closest('.fixture');
-  if(!li) return;
-  const idx = Number(li.dataset.index);
-  const f = fixtures[idx];
-  
-  // delete
-  if(ev.target.matches('.del') || ev.target.closest('.del')){
-    if(!isAdmin){ 
-      showToast('Admin only', 'error'); 
-      return; 
-    }
-    if(!confirm('Delete fixture?')) return;
-    fixtures.splice(idx,1); 
-    saveStorage(); 
-    renderFixtures(); 
-    showToast('Fixture deleted', 'success');
-    return;
-  }
-  
-  // edit: open prompt to swap teams quickly
-  if(ev.target.matches('.edit') || ev.target.closest('.edit')){
-    if(!isAdmin){ 
-      showToast('Admin only', 'error'); 
-      return; 
-    }
-    const newA = prompt('Team A name:', f.teamA) || f.teamA;
-    const newB = prompt('Team B name:', f.teamB) || f.teamB;
-    if(newA === newB){ 
-      showToast('Teams must be different', 'error'); 
-      return; 
-    }
-    f.teamA = newA; 
-    f.teamB = newB;
-    saveStorage(); 
-    renderFixtures();
-    showToast('Fixture updated', 'success');
-    return;
-  }
-  
-  // mark played / revoke
-  if(ev.target.matches('.play')){
-    if(!isAdmin){ 
-      showToast('Admin only', 'error'); 
-      return; 
-    }
-    // read scores from inputs
-    const scoreAInput = li.querySelector('.scoreA');
-    const scoreBInput = li.querySelector('.scoreB');
-    const sA = scoreAInput.value.trim();
-    const sB = scoreBInput.value.trim();
+    </div>
     
-    if(ev.target.textContent.includes('Revoke')){
-      // revoke: subtract the previous result if any
-      if(f.status !== 'played'){ 
-        showToast('Fixture is not marked played', 'error'); 
-        return; 
-      }
-      if(!confirm('Revoke result? This will remove its effect from table.')) return;
-      // revert scoring: subtract previously added stats
-      revertFixtureToUpcoming(f);
-      f.status = 'upcoming';
-      f.scoreA = null; 
-      f.scoreB = null;
-      saveStorage(); 
-      renderTable(); 
+    <div class="table-container" id="table-container">
+      <div class="table-header">
+        <span>League Standings</span>
+        <button class="btn btn-icon" id="edit-toggle" title="Toggle Edit Mode">
+          <i class="fas fa-edit"></i>
+        </button>
+      </div>
+      <div class="table-wrapper">
+        <table id="league-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Club</th>
+              <th>P</th>
+              <th>W</th>
+              <th>D</th>
+              <th>L</th>
+              <th>F</th>
+              <th>A</th>
+              <th>GD</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Table rows will be generated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="fixtures-section">
+      <h2 class="section-title">
+        <i class="fas fa-calendar-alt"></i> Match Fixtures
+      </h2>
+      
+      <div class="add-fixture">
+        <select id="team-a">
+          <option value="">Select Team A</option>
+        </select>
+        <span style="font-weight: 600; color: var(--muted);">vs</span>
+        <select id="team-b">
+          <option value="">Select Team B</option>
+        </select>
+        <button class="btn" id="add-fixture-btn">
+          <i class="fas fa-plus"></i> Add
+        </button>
+      </div>
+      
+      <ul class="fixture-list" id="fixture-list">
+        <!-- Fixtures will be generated by JavaScript -->
+      </ul>
+      
+      <div class="admin-panel" id="admin-panel">
+        <p><i class="fas fa-info-circle"></i> Tap any cell to edit team stats</p>
+        <p><i class="fas fa-info-circle"></i> Enter scores and mark matches as played to update standings</p>
+        <p><i class="fas fa-info-circle"></i> All changes are saved automatically</p>
+      </div>
+    </div>
+    
+    <footer>
+      <p>Tap cells to edit. Data saved automatically.</p>
+    </footer>
+  </div>
+  
+  <div class="toast" id="toast"></div>
+  <div class="edit-mode-indicator" id="edit-indicator">
+    <i class="fas fa-edit"></i> Edit Mode
+  </div>
+  
+  <script>
+    // Constants
+    const STORAGE_KEY = 'kiminini_premier_league';
+    const ADMIN_PASSWORD = '2030';
+    
+    // Initial data
+    const INITIAL_TEAMS = [
+      {name: "Kiminini Legends FC", played: 34, won: 29, drawn: 3, lost: 2, goalsFor: 101, goalsAgainst: 32, goalDifference: 69, points: 90},
+      {name: "Hilario Allstars FC", played: 34, won: 27, drawn: 5, lost: 2, goalsFor: 98, goalsAgainst: 16, goalDifference: 82, points: 86},
+      {name: "Kiminini Stars FC", played: 34, won: 24, drawn: 5, lost: 5, goalsFor: 88, goalsAgainst: 33, goalDifference: 55, points: 77},
+      {name: "Small Tiger FC", played: 34, won: 22, drawn: 5, lost: 7, goalsFor: 80, goalsAgainst: 40, goalDifference: 40, points: 71},
+      {name: "Samba FC", played: 34, won: 21, drawn: 4, lost: 9, goalsFor: 67, goalsAgainst: 29, goalDifference: 38, points: 67},
+      {name: "Royal Bullets FC", played: 34, won: 18, drawn: 6, lost: 10, goalsFor: 89, goalsAgainst: 47, goalDifference: 42, points: 60},
+      {name: "Namawanga FC", played: 34, won: 17, drawn: 8, lost: 9, goalsFor: 78, goalsAgainst: 49, goalDifference: 29, points: 59},
+      {name: "Kiminini United FC", played: 34, won: 17, drawn: 7, lost: 10, goalsFor: 78, goalsAgainst: 41, goalDifference: 37, points: 58},
+      {name: "Konoin Legends FC", played: 34, won: 16, drawn: 7, lost: 11, goalsFor: 67, goalsAgainst: 55, goalDifference: 12, points: 55},
+      {name: "Intermiami FC", played: 34, won: 16, drawn: 7, lost: 11, goalsFor: 65, goalsAgainst: 55, goalDifference: 10, points: 55},
+      {name: "Kiminini V. College", played: 34, won: 11, drawn: 7, lost: 16, goalsFor: 52, goalsAgainst: 70, goalDifference: -18, points: 40},
+      {name: "Roadblock FC", played: 34, won: 10, drawn: 7, lost: 17, goalsFor: 66, goalsAgainst: 75, goalDifference: -9, points: 37},
+      {name: "Sabata FC", played: 33, won: 9, drawn: 7, lost: 17, goalsFor: 41, goalsAgainst: 68, goalDifference: -27, points: 34},
+      {name: "Bukwet FC", played: 34, won: 10, drawn: 4, lost: 20, goalsFor: 38, goalsAgainst: 70, goalDifference: -32, points: 34},
+      {name: "Baraton Allstars FC", played: 34, won: 10, drawn: 4, lost: 20, goalsFor: 41, goalsAgainst: 85, goalDifference: -44, points: 34},
+      {name: "14 Brothers FC", played: 34, won: 7, drawn: 5, lost: 22, goalsFor: 43, goalsAgainst: 85, goalDifference: -42, points: 26},
+      {name: "Mitoto FC", played: 34, won: 6, drawn: 7, lost: 21, goalsFor: 40, goalsAgainst: 68, goalDifference: -28, points: 25},
+      {name: "Wazoefu FC", played: 34, won: 6, drawn: 7, lost: 21, goalsFor: 43, goalsAgainst: 88, goalDifference: -45, points: 25},
+      {name: "Kiminini Rangers FC", played: 34, won: 5, drawn: 5, lost: 24, goalsFor: 52, goalsAgainst: 107, goalDifference: -55, points: 20},
+      {name: "Home United FC", played: 33, won: 1, drawn: 4, lost: 28, goalsFor: 22, goalsAgainst: 136, goalDifference: -114, points: 7}
+    ];
+    
+    // State
+    let teams = [];
+    let fixtures = [];
+    let isAdmin = false;
+    let editMode = false;
+    let currentEditCell = null;
+    
+    // DOM Elements
+    const tableBody = document.getElementById('table-body');
+    const teamASelect = document.getElementById('team-a');
+    const teamBSelect = document.getElementById('team-b');
+    const fixtureList = document.getElementById('fixture-list');
+    const adminPassInput = document.getElementById('admin-pass');
+    const adminStatus = document.getElementById('admin-status');
+    const adminPanel = document.getElementById('admin-panel');
+    const toast = document.getElementById('toast');
+    const editToggle = document.getElementById('edit-toggle');
+    const editIndicator = document.getElementById('edit-indicator');
+    
+    // Initialize
+    function init() {
+      loadData();
+      renderTable();
       renderFixtures();
-      showToast('Result revoked', 'success');
-      return;
+      populateTeamSelects();
+      setupEventListeners();
     }
     
-    // marking played
-    if(sA === '' || sB === ''){ 
-      showToast('Please enter both scores before marking played', 'error'); 
-      return; 
-    }
-    const scoreA = parseInt(sA,10), scoreB = parseInt(sB,10);
-    if(isNaN(scoreA) || isNaN(scoreB)){ 
-      showToast('Scores invalid', 'error'); 
-      return; 
-    }
-    
-    // if already played previously, revoke previous first (safety)
-    if(f.status === 'played' && (f.scoreA !== null || f.scoreB !== null)){
-      revertFixtureToUpcoming(f);
-    }
-    
-    // apply to teams
-    applyFixtureResultToTeams(f.teamA, f.teamB, scoreA, scoreB);
-    f.status = 'played'; 
-    f.scoreA = scoreA; 
-    f.scoreB = scoreB;
-    saveStorage(); 
-    renderTable(); 
-    renderFixtures();
-    showToast('Match result recorded', 'success');
-    return;
-  }
-});
-
-// update score inputs on change (just store temp until played)
-fixturesList.addEventListener('change', (ev)=>{
-  const li = ev.target.closest('.fixture');
-  if(!li) return;
-  const idx = Number(li.dataset.index);
-  const f = fixtures[idx];
-  const a = li.querySelector('.scoreA').value.trim();
-  const b = li.querySelector('.scoreB').value.trim();
-  f.scoreA = a === '' ? null : Number(a);
-  f.scoreB = b === '' ? null : Number(b);
-  saveStorage();
-});
-
-/* ---------- fixture -> team application ---------- */
-function applyFixtureResultToTeams(nameA, nameB, scoreA, scoreB){
-  const ta = findTeamByName(nameA);
-  const tb = findTeamByName(nameB);
-  if(!ta || !tb){ 
-    showToast('Team not found in table', 'error'); 
-    return; 
-  }
-  
-  // backup original? We don't add complex history now
-  ta.P += 1; 
-  tb.P += 1;
-  ta.F += scoreA; 
-  ta.A += scoreB;
-  tb.F += scoreB; 
-  tb.A += scoreA;
-  
-  if(scoreA > scoreB){ 
-    ta.W += 1; 
-    tb.L += 1; 
-    ta.Pts += 3; 
-  }
-  else if(scoreA < scoreB){ 
-    tb.W += 1; 
-    ta.L += 1; 
-    tb.Pts += 3; 
-  }
-  else { 
-    ta.D += 1; 
-    tb.D += 1; 
-    ta.Pts += 1; 
-    tb.Pts += 1; 
-  }
-  
-  calcDerived(ta); 
-  calcDerived(tb);
-}
-
-/* ---------- revoke ---------- */
-function revertFixtureToUpcoming(f){
-  // subtract applied stats if we have recorded scores
-  if(f.status !== 'played' || f.scoreA === null || f.scoreB === null) return;
-  
-  const ta = findTeamByName(f.teamA);
-  const tb = findTeamByName(f.teamB);
-  if(!ta || !tb) return;
-  
-  ta.P -= 1; 
-  tb.P -=1;
-  ta.F -= f.scoreA; 
-  ta.A -= f.scoreB;
-  tb.F -= f.scoreB; 
-  tb.A -= f.scoreA;
-  
-  if(f.scoreA > f.scoreB){ 
-    ta.W -=1; 
-    tb.L -=1; 
-    ta.Pts -=3; 
-  }
-  else if(f.scoreA < f.scoreB){ 
-    tb.W -=1; 
-    ta.L -=1; 
-    tb.Pts -=3; 
-  }
-  else { 
-    ta.D -=1; 
-    tb.D -=1; 
-    ta.Pts -=1; 
-    tb.Pts -=1; 
-  }
-  
-  // ensure no negatives
-  ['W','D','L','P','F','A','Pts'].forEach(k=>{
-    if(ta[k] < 0) ta[k] = 0;
-    if(tb[k] < 0) tb[k] = 0;
-  });
-  
-  calcDerived(ta); 
-  calcDerived(tb);
-}
-
-/* ---------- export/share ---------- */
-document.getElementById('btn-export').addEventListener('click', ()=>{
-  showToast('Generating image...', 'success');
-  const el = document.getElementById('table-container');
-  html2canvas(el, {scale:2, backgroundColor: null}).then(canvas=>{
-    const data = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.href = data; 
-    link.download = 'kpl-table.png'; 
-    link.click();
-    showToast('Image exported successfully', 'success');
-  }).catch(err => {
-    console.error('Export error:', err);
-    showToast('Failed to export image', 'error');
-  });
-});
-
-document.getElementById('btn-share').addEventListener('click', async ()=>{
-  if(navigator.share){
-    showToast('Preparing image for sharing...', 'success');
-    const el = document.getElementById('table-container');
-    try {
-      const canvas = await html2canvas(el, {scale:2, backgroundColor: null});
-      canvas.toBlob(async blob=>{
-        const filesArray = [ new File([blob], 'kpl-table.png', { type: 'image/png' }) ];
+    // Load data from localStorage
+    function loadData() {
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      if (savedData) {
         try {
-          await navigator.share({ 
-            files: filesArray, 
-            title: 'Kiminini Premier League Table',
-            text: 'Check out the current Kiminini Premier League standings!'
-          });
-          showToast('Shared successfully', 'success');
-        } catch(err){ 
-          console.warn('Share cancelled or not available', err);
-          if (err.name !== 'AbortError') {
-            showToast('Share failed', 'error');
+          const data = JSON.parse(savedData);
+          teams = data.teams || [...INITIAL_TEAMS];
+          fixtures = data.fixtures || [];
+        } catch (e) {
+          console.error('Error loading data:', e);
+          teams = [...INITIAL_TEAMS];
+          fixtures = [];
+        }
+      } else {
+        teams = [...INITIAL_TEAMS];
+        fixtures = [];
+      }
+    }
+    
+    // Save data to localStorage
+    function saveData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ teams, fixtures }));
+      } catch (e) {
+        console.error('Error saving data:', e);
+        showToast('Failed to save data', 'error');
+      }
+    }
+    
+    // Render the league table
+    function renderTable() {
+      // Calculate derived values
+      teams.forEach(team => {
+        team.played = team.won + team.drawn + team.lost;
+        team.goalDifference = team.goalsFor - team.goalsAgainst;
+        team.points = (team.won * 3) + team.drawn;
+      });
+      
+      // Sort by points, then goal difference, then goals for
+      teams.sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;
+        return b.goalsFor - a.goalsFor;
+      });
+      
+      // Clear table
+      tableBody.innerHTML = '';
+      
+      // Render rows
+      teams.forEach((team, index) => {
+        const row = document.createElement('tr');
+        if (index < 3) row.classList.add('top-3');
+        
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td class="team-name editable" data-field="name" data-index="${index}">
+            <span class="team-position">${index + 1}</span>
+            ${team.name}
+          </td>
+          <td class="editable" data-field="played" data-index="${index}">${team.played}</td>
+          <td class="editable" data-field="won" data-index="${index}">${team.won}</td>
+          <td class="editable" data-field="drawn" data-index="${index}">${team.drawn}</td>
+          <td class="editable" data-field="lost" data-index="${index}">${team.lost}</td>
+          <td class="editable" data-field="goalsFor" data-index="${index}">${team.goalsFor}</td>
+          <td class="editable" data-field="goalsAgainst" data-index="${index}">${team.goalsAgainst}</td>
+          <td>${team.goalDifference}</td>
+          <td><strong>${team.points}</strong></td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+    }
+    
+    // Render fixtures
+    function renderFixtures() {
+      fixtureList.innerHTML = '';
+      
+      if (fixtures.length === 0) {
+        fixtureList.innerHTML = '<li class="muted">No fixtures added yet</li>';
+        return;
+      }
+      
+      fixtures.forEach((fixture, index) => {
+        const li = document.createElement('li');
+        li.className = 'fixture-item';
+        
+        li.innerHTML = `
+          <div class="fixture-teams">${fixture.teamA} vs ${fixture.teamB}</div>
+          <div class="fixture-score">
+            <input type="number" min="0" class="score-a" value="${fixture.scoreA || ''}" placeholder="A" data-index="${index}">
+            <span>-</span>
+            <input type="number" min="0" class="score-b" value="${fixture.scoreB || ''}" placeholder="B" data-index="${index}">
+          </div>
+          <div class="fixture-status ${fixture.played ? 'played' : ''}">${fixture.played ? 'Played' : 'Upcoming'}</div>
+          <div class="fixture-actions">
+            <button class="btn small ${fixture.played ? 'ghost' : ''}" data-action="${fixture.played ? 'revoke' : 'play'}" data-index="${index}">
+              ${fixture.played ? '<i class="fas fa-undo"></i>' : '<i class="fas fa-check"></i>'} ${fixture.played ? 'Revoke' : 'Play'}
+            </button>
+            <button class="btn ghost small" data-action="delete" data-index="${index}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `;
+        
+        fixtureList.appendChild(li);
+      });
+    }
+    
+    // Populate team selects
+    function populateTeamSelects() {
+      teamASelect.innerHTML = '<option value="">Select Team A</option>';
+      teamBSelect.innerHTML = '<option value="">Select Team B</option>';
+      
+      teams.forEach(team => {
+        const optionA = document.createElement('option');
+        optionA.value = team.name;
+        optionA.textContent = team.name;
+        teamASelect.appendChild(optionA);
+        
+        const optionB = document.createElement('option');
+        optionB.value = team.name;
+        optionB.textContent = team.name;
+        teamBSelect.appendChild(optionB);
+      });
+    }
+    
+    // Setup event listeners
+    function setupEventListeners() {
+      // Admin login
+      document.getElementById('btn-login').addEventListener('click', () => {
+        const password = adminPassInput.value.trim();
+        if (password === ADMIN_PASSWORD) {
+          isAdmin = true;
+          adminStatus.innerHTML = '<span class="status-indicator unlocked"></span> Unlocked';
+          adminPanel.classList.add('active');
+          showToast('Admin access granted', 'success');
+          adminPassInput.value = '';
+        } else {
+          showToast('Incorrect password', 'error');
+        }
+      });
+      
+      // Reset data
+      document.getElementById('btn-reset').addEventListener('click', () => {
+        if (confirm('Reset all data to initial values?')) {
+          teams = [...INITIAL_TEAMS];
+          fixtures = [];
+          saveData();
+          renderTable();
+          renderFixtures();
+          showToast('Data reset to initial values', 'success');
+        }
+      });
+      
+      // Clear data
+      document.getElementById('btn-clear').addEventListener('click', () => {
+        if (confirm('Clear all data? This cannot be undone.')) {
+          localStorage.removeItem(STORAGE_KEY);
+          teams = [...INITIAL_TEAMS];
+          fixtures = [];
+          renderTable();
+          renderFixtures();
+          showToast('All data cleared', 'warning');
+        }
+      });
+      
+      // Toggle edit mode
+      editToggle.addEventListener('click', () => {
+        if (!isAdmin) {
+          showToast('Admin access required', 'warning');
+          return;
+        }
+        
+        editMode = !editMode;
+        if (editMode) {
+          editIndicator.classList.add('active');
+          showToast('Edit mode enabled', 'success');
+        } else {
+          editIndicator.classList.remove('active');
+          // Cancel any ongoing edit
+          if (currentEditCell) {
+            finishEdit(false);
+          }
+          showToast('Edit mode disabled', 'success');
+        }
+      });
+      
+      // Add fixture
+      document.getElementById('add-fixture-btn').addEventListener('click', () => {
+        const teamA = teamASelect.value;
+        const teamB = teamBSelect.value;
+        
+        if (!teamA || !teamB) {
+          showToast('Please select both teams', 'warning');
+          return;
+        }
+        
+        if (teamA === teamB) {
+          showToast('Teams must be different', 'warning');
+          return;
+        }
+        
+        fixtures.push({
+          teamA,
+          teamB,
+          scoreA: null,
+          scoreB: null,
+          played: false
+        });
+        
+        saveData();
+        renderFixtures();
+        showToast('Fixture added', 'success');
+        
+        // Reset selects
+        teamASelect.selectedIndex = 0;
+        teamBSelect.selectedIndex = 0;
+      });
+      
+      // Table cell editing
+      tableBody.addEventListener('click', (e) => {
+        if (!editMode) return;
+        
+        const cell = e.target.closest('.editable');
+        if (!cell) return;
+        
+        // If we're already editing a cell, finish that edit first
+        if (currentEditCell && currentEditCell !== cell) {
+          finishEdit(true);
+        }
+        
+        startEdit(cell);
+      });
+      
+      // Handle input events when editing
+      document.addEventListener('input', (e) => {
+        if (e.target.classList.contains('edit-input')) {
+          // Auto-resize input for team names
+          if (e.target.classList.contains('text-input')) {
+            e.target.style.width = Math.max(150, e.target.value.length * 8) + 'px';
           }
         }
       });
-    } catch (err) {
-      console.error('Share preparation error:', err);
-      showToast('Failed to prepare image for sharing', 'error');
+      
+      // Handle key events when editing
+      document.addEventListener('keydown', (e) => {
+        if (!currentEditCell) return;
+        
+        if (e.key === 'Enter') {
+          finishEdit(true);
+        } else if (e.key === 'Escape') {
+          finishEdit(false);
+        }
+      });
+      
+      // Handle clicks outside to finish editing
+      document.addEventListener('click', (e) => {
+        if (currentEditCell && !currentEditCell.contains(e.target)) {
+          finishEdit(true);
+        }
+      });
+      
+      // Fixture actions
+      fixtureList.addEventListener('click', (e) => {
+        if (!isAdmin) {
+          showToast('Admin access required', 'warning');
+          return;
+        }
+        
+        const button = e.target.closest('button');
+        if (!button) return;
+        
+        const action = button.dataset.action;
+        const index = parseInt(button.dataset.index);
+        const fixture = fixtures[index];
+        
+        if (action === 'play') {
+          const scoreAInput = document.querySelector(`.score-a[data-index="${index}"]`);
+          const scoreBInput = document.querySelector(`.score-b[data-index="${index}"]`);
+          
+          const scoreA = parseInt(scoreAInput.value);
+          const scoreB = parseInt(scoreBInput.value);
+          
+          if (isNaN(scoreA) || isNaN(scoreB)) {
+            showToast('Please enter valid scores', 'warning');
+            return;
+          }
+          
+          // Update fixture
+          fixture.scoreA = scoreA;
+          fixture.scoreB = scoreB;
+          fixture.played = true;
+          
+          // Update team stats
+          updateTeamStats(fixture.teamA, fixture.teamB, scoreA, scoreB);
+          
+          saveData();
+          renderTable();
+          renderFixtures();
+          showToast('Match result recorded', 'success');
+          
+        } else if (action === 'revoke') {
+          if (!confirm('Revoke this match result?')) return;
+          
+          // Revert team stats
+          revertTeamStats(fixture.teamA, fixture.teamB, fixture.scoreA, fixture.scoreB);
+          
+          // Update fixture
+          fixture.played = false;
+          fixture.scoreA = null;
+          fixture.scoreB = null;
+          
+          saveData();
+          renderTable();
+          renderFixtures();
+          showToast('Match result revoked', 'success');
+          
+        } else if (action === 'delete') {
+          if (!confirm('Delete this fixture?')) return;
+          
+          // If played, revert stats first
+          if (fixture.played) {
+            revertTeamStats(fixture.teamA, fixture.teamB, fixture.scoreA, fixture.scoreB);
+          }
+          
+          fixtures.splice(index, 1);
+          saveData();
+          renderFixtures();
+          showToast('Fixture deleted', 'success');
+        }
+      });
+      
+      // Score input changes
+      fixtureList.addEventListener('input', (e) => {
+        if (e.target.classList.contains('score-a') || e.target.classList.contains('score-b')) {
+          const index = parseInt(e.target.dataset.index);
+          const fixture = fixtures[index];
+          
+          if (e.target.classList.contains('score-a')) {
+            fixture.scoreA = e.target.value ? parseInt(e.target.value) : null;
+          } else {
+            fixture.scoreB = e.target.value ? parseInt(e.target.value) : null;
+          }
+          
+          saveData();
+        }
+      });
     }
-  } else {
-    showToast('Web Share not available in this browser — use Export PNG instead.', 'warning');
-  }
-});
-
-/* ---------- init ---------- */
-function loadAndRender(){
-  const ok = loadStorage();
-  if(!ok){ 
-    seedStorage(); 
-    loadStorage(); 
-  }
-  renderTable(); 
-  renderFixtures();
-}
-
-// Initialize the app
-document.addEventListener('DOMContentLoaded', () => {
-  loadAndRender();
-  
-  // Set up keyboard shortcut for admin login
-  document.addEventListener('keydown', (e) => {
-    // Ctrl+Shift+A for admin login
-    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-      document.getElementById('admin-pass').focus();
+    
+    // Start editing a cell
+    function startEdit(cell) {
+      if (currentEditCell === cell) return;
+      
+      currentEditCell = cell;
+      const field = cell.dataset.field;
+      const index = parseInt(cell.dataset.index);
+      const currentValue = teams[index][field];
+      
+      // Add editing class
+      cell.classList.add('editing');
+      
+      // Create input element
+      const input = document.createElement('input');
+      input.type = field === 'name' ? 'text' : 'number';
+      input.value = currentValue;
+      input.className = 'edit-input';
+      
+      if (field === 'name') {
+        input.classList.add('text-input');
+        input.style.width = Math.max(150, currentValue.length * 8) + 'px';
+      }
+      
+      // Replace cell content with input
+      if (field === 'name') {
+        // For team name, keep the position badge
+        const positionBadge = cell.querySelector('.team-position');
+        cell.innerHTML = '';
+        cell.appendChild(positionBadge);
+        cell.appendChild(input);
+      } else {
+        cell.innerHTML = '';
+        cell.appendChild(input);
+      }
+      
+      // Focus and select input
+      input.focus();
+      if (field !== 'name') {
+        input.select();
+      }
     }
-  });
-});
-
-/* expose for debugging (optional) */
-window.__kpl = { teams, fixtures, saveStorage, seedStorage, loadStorage };
-</script>
+    
+    // Finish editing and save or cancel
+    function finishEdit(save) {
+      if (!currentEditCell) return;
+      
+      const cell = currentEditCell;
+      const field = cell.dataset.field;
+      const index = parseInt(cell.dataset.index);
+      const input = cell.querySelector('.edit-input');
+      
+      // Remove editing class
+      cell.classList.remove('editing');
+      
+      if (save) {
+        // Get new value
+        let newValue;
+        if (field === 'name') {
+          newValue = input.value.trim();
+          if (!newValue) {
+            showToast('Team name cannot be empty', 'warning');
+            // Restore original value
+            renderTable();
+            currentEditCell = null;
+            return;
+          }
+        } else {
+          newValue = parseInt(input.value) || 0;
+          if (newValue < 0) {
+            showToast('Value cannot be negative', 'warning');
+            // Restore original value
+            renderTable();
+            currentEditCell = null;
+            return;
+          }
+        }
+        
+        // Update team data
+        teams[index][field] = newValue;
+        
+        // Save data
+        saveData();
+        
+        // Re-render table
+        renderTable();
+        
+        showToast('Updated successfully', 'success');
+      } else {
+        // Cancel edit - re-render table to restore original value
+        renderTable();
+      }
+      
+      currentEditCell = null;
+    }
+    
+    // Update team stats based on match result
+    function updateTeamStats(teamAName, teamBName, scoreA, scoreB) {
+      const teamA = teams.find(t => t.name === teamAName);
+      const teamB = teams.find(t => t.name === teamBName);
+      
+      if (!teamA || !teamB) return;
+      
+      // Update games played
+      teamA.played = (teamA.played || 0) + 1;
+      teamB.played = (teamB.played || 0) + 1;
+      
+      // Update goals
+      teamA.goalsFor = (teamA.goalsFor || 0) + scoreA;
+      teamA.goalsAgainst = (teamA.goalsAgainst || 0) + scoreB;
+      
+      teamB.goalsFor = (teamB.goalsFor || 0) + scoreB;
+      teamB.goalsAgainst = (teamB.goalsAgainst || 0) + scoreA;
+      
+      // Update wins/draws/losses
+      if (scoreA > scoreB) {
+        teamA.won = (teamA.won || 0) + 1;
+        teamB.lost = (teamB.lost || 0) + 1;
+      } else if (scoreA < scoreB) {
+        teamB.won = (teamB.won || 0) + 1;
+        teamA.lost = (teamA.lost || 0) + 1;
+      } else {
+        teamA.drawn = (teamA.drawn || 0) + 1;
+        teamB.drawn = (teamB.drawn || 0) + 1;
+      }
+    }
+    
+    // Revert team stats when match result is revoked
+    function revertTeamStats(teamAName, teamBName, scoreA, scoreB) {
+      const teamA = teams.find(t => t.name === teamAName);
+      const teamB = teams.find(t => t.name === teamBName);
+      
+      if (!teamA || !teamB) return;
+      
+      // Revert games played
+      teamA.played = Math.max(0, (teamA.played || 0) - 1);
+      teamB.played = Math.max(0, (teamB.played || 0) - 1);
+      
+      // Revert goals
+      teamA.goalsFor = Math.max(0, (teamA.goalsFor || 0) - scoreA);
+      teamA.goalsAgainst = Math.max(0, (teamA.goalsAgainst || 0) - scoreB);
+      
+      teamB.goalsFor = Math.max(0, (teamB.goalsFor || 0) - scoreB);
+      teamB.goalsAgainst = Math.max(0, (teamB.goalsAgainst || 0) - scoreA);
+      
+      // Revert wins/draws/losses
+      if (scoreA > scoreB) {
+        teamA.won = Math.max(0, (teamA.won || 0) - 1);
+        teamB.lost = Math.max(0, (teamB.lost || 0) - 1);
+      } else if (scoreA < scoreB) {
+        teamB.won = Math.max(0, (teamB.won || 0) - 1);
+        teamA.lost = Math.max(0, (teamA.lost || 0) - 1);
+      } else {
+        teamA.drawn = Math.max(0, (teamA.drawn || 0) - 1);
+        teamB.drawn = Math.max(0, (teamB.drawn || 0) - 1);
+      }
+    }
+    
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.className = 'toast show';
+      
+      if (type === 'success') {
+        toast.classList.add('success');
+      } else if (type === 'error') {
+        toast.classList.add('error');
+      } else if (type === 'warning') {
+        toast.classList.add('warning');
+      }
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
