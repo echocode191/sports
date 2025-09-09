@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Kiminini Premier League - Live standings with direct editing" />
+  <meta name="description" content="Kiminini Premier League - Live standings with easy editing" />
   <meta name="theme-color" content="#0b8a3e" />
   <title>Kiminini Premier League — Editable Standings</title>
   
@@ -191,7 +191,7 @@
     
     .edit-input {
       width: 100%;
-      padding: 8px;
+      padding: 6px;
       border: 1px solid var(--edit);
       border-radius: 4px;
       font-size: 14px;
@@ -201,6 +201,37 @@
     
     .edit-input.text-input {
       text-align: left;
+    }
+    
+    /* New styles for always-visible edit mode */
+    .edit-mode .editable-cell {
+      padding: 0 !important;
+    }
+    
+    .edit-mode .edit-input {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: inherit;
+      text-align: center;
+      font-weight: 600;
+      padding: 12px 8px;
+      margin: 0;
+    }
+    
+    .edit-mode .edit-input.text-input {
+      text-align: left;
+    }
+    
+    .edit-mode .edit-input:focus {
+      background: rgba(66, 133, 244, 0.1);
+      outline: 1px solid var(--edit);
+    }
+    
+    .edit-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
     }
     
     /* Controls */
@@ -317,12 +348,12 @@
       align-items: center;
     }
     
-    .add-fixture input {
-      flex: 1;
+    .add-fixture select {
       padding: 8px;
       border-radius: 6px;
       border: 1px solid var(--border);
       font-size: 14px;
+      flex: 1;
       min-width: 120px;
     }
     
@@ -360,6 +391,11 @@
       border: 1px solid var(--border);
       text-align: center;
       font-size: 14px;
+    }
+    
+    .fixture-score input:disabled {
+      background-color: #f5f5f5;
+      cursor: not-allowed;
     }
     
     .fixture-actions {
@@ -465,20 +501,6 @@
       display: flex;
     }
     
-    /* Data Persistence Notice */
-    .persistence-notice {
-      background: rgba(11,138,62,0.1);
-      border-left: 4px solid var(--green);
-      padding: 10px;
-      margin: 16px 0;
-      border-radius: 0 6px 6px 0;
-      font-size: 14px;
-      color: var(--dark);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
     /* Mobile First Responsive */
     @media (min-width: 768px) {
       .container {
@@ -512,6 +534,10 @@
       .add-fixture {
         flex-wrap: nowrap;
       }
+      
+      .add-fixture select {
+        flex: 0 1 auto;
+      }
     }
     
     @media (min-width: 1024px) {
@@ -536,11 +562,6 @@
   </header>
   
   <div class="container">
-    <div class="persistence-notice">
-      <i class="fas fa-info-circle" style="color: var(--green);"></i>
-      <span>All changes are saved automatically and will persist when you revisit</span>
-    </div>
-    
     <div class="controls">
       <div class="admin-controls">
         <input type="password" id="admin-pass" placeholder="Admin password" style="padding: 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; flex: 1; min-width: 150px;">
@@ -596,9 +617,13 @@
       </h2>
       
       <div class="add-fixture">
-        <input type="text" id="team-a" placeholder="Team A name">
+        <select id="team-a">
+          <option value="">Select Team A</option>
+        </select>
         <span style="font-weight: 600; color: var(--muted);">vs</span>
-        <input type="text" id="team-b" placeholder="Team B name">
+        <select id="team-b">
+          <option value="">Select Team B</option>
+        </select>
         <button class="btn" id="add-fixture-btn">
           <i class="fas fa-plus"></i> Add
         </button>
@@ -609,14 +634,14 @@
       </ul>
       
       <div class="admin-panel" id="admin-panel">
-        <p><i class="fas fa-info-circle"></i> Tap any cell to edit team stats</p>
-        <p><i class="fas fa-info-circle"></i> Enter scores and mark matches as played to update standings</p>
+        <p><i class="fas fa-info-circle"></i> Add fixtures and enter scores to update standings</p>
+        <p><i class="fas fa-info-circle"></i> Click "Play" to apply match results to the table</p>
         <p><i class="fas fa-info-circle"></i> All changes are saved automatically</p>
       </div>
     </div>
     
     <footer>
-      <p>Tap cells to edit. Data saved automatically.</p>
+      <p>Add fixtures and mark as played to update standings. Data saved automatically.</p>
     </footer>
   </div>
   
@@ -663,8 +688,8 @@
     
     // DOM Elements
     const tableBody = document.getElementById('table-body');
-    const teamAInput = document.getElementById('team-a');
-    const teamBInput = document.getElementById('team-b');
+    const teamASelect = document.getElementById('team-a');
+    const teamBSelect = document.getElementById('team-b');
     const fixtureList = document.getElementById('fixture-list');
     const adminPassInput = document.getElementById('admin-pass');
     const adminStatus = document.getElementById('admin-status');
@@ -672,12 +697,14 @@
     const toast = document.getElementById('toast');
     const editToggle = document.getElementById('edit-toggle');
     const editIndicator = document.getElementById('edit-indicator');
+    const tableContainer = document.getElementById('table-container');
     
     // Initialize
     function init() {
       loadData();
       renderTable();
       renderFixtures();
+      populateTeamSelects();
       setupEventListeners();
     }
     
@@ -689,25 +716,37 @@
           const data = JSON.parse(savedData);
           teams = data.teams || [...INITIAL_TEAMS];
           fixtures = data.fixtures || [];
-          showToast('Data loaded successfully', 'success');
+          
+          // Apply all played fixtures to team stats
+          applyAllFixtures();
         } catch (e) {
           console.error('Error loading data:', e);
           teams = [...INITIAL_TEAMS];
           fixtures = [];
-          showToast('Using default data', 'warning');
         }
       } else {
         teams = [...INITIAL_TEAMS];
         fixtures = [];
-        showToast('Using default data', 'warning');
       }
+    }
+    
+    // Apply all played fixtures to team stats
+    function applyAllFixtures() {
+      // Reset teams to initial state
+      teams = [...INITIAL_TEAMS];
+      
+      // Apply each played fixture
+      fixtures.forEach(fixture => {
+        if (fixture.played && fixture.scoreA !== null && fixture.scoreB !== null) {
+          updateTeamStats(fixture.teamA, fixture.teamB, fixture.scoreA, fixture.scoreB);
+        }
+      });
     }
     
     // Save data to localStorage
     function saveData() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ teams, fixtures }));
-        showToast('Data saved successfully', 'success');
       } catch (e) {
         console.error('Error saving data:', e);
         showToast('Failed to save data', 'error');
@@ -733,23 +772,56 @@
       // Clear table
       tableBody.innerHTML = '';
       
+      // Add edit mode class to table container if in edit mode
+      if (editMode) {
+        tableContainer.classList.add('edit-mode');
+      } else {
+        tableContainer.classList.remove('edit-mode');
+      }
+      
       // Render rows
       teams.forEach((team, index) => {
         const row = document.createElement('tr');
         if (index < 3) row.classList.add('top-3');
         
-        row.innerHTML = `
-          <td>${index + 1}</td>
-          <td class="team-name editable" data-field="name" data-index="${index}">
+        // Determine cell content based on edit mode
+        const nameCell = editMode ? 
+          `<td class="team-name editable-cell">
+            <span class="team-position">${index + 1}</span>
+            <input type="text" class="edit-input text-input" data-field="name" data-index="${index}" value="${team.name}">
+          </td>` :
+          `<td class="team-name editable" data-field="name" data-index="${index}">
             <span class="team-position">${index + 1}</span>
             ${team.name}
+          </td>`;
+        
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          ${nameCell}
+          <td class="editable-cell">${editMode ? 
+            `<input type="number" class="edit-input" data-field="played" data-index="${index}" value="${team.played}">` : 
+            `<span class="editable" data-field="played" data-index="${index}">${team.played}</span>`}
           </td>
-          <td class="editable" data-field="played" data-index="${index}">${team.played}</td>
-          <td class="editable" data-field="won" data-index="${index}">${team.won}</td>
-          <td class="editable" data-field="drawn" data-index="${index}">${team.drawn}</td>
-          <td class="editable" data-field="lost" data-index="${index}">${team.lost}</td>
-          <td class="editable" data-field="goalsFor" data-index="${index}">${team.goalsFor}</td>
-          <td class="editable" data-field="goalsAgainst" data-index="${index}">${team.goalsAgainst}</td>
+          <td class="editable-cell">${editMode ? 
+            `<input type="number" class="edit-input" data-field="won" data-index="${index}" value="${team.won}">` : 
+            `<span class="editable" data-field="won" data-index="${index}">${team.won}</span>`}
+          </td>
+          <td class="editable-cell">${editMode ? 
+            `<input type="number" class="edit-input" data-field="drawn" data-index="${index}" value="${team.drawn}">` : 
+            `<span class="editable" data-field="drawn" data-index="${index}">${team.drawn}</span>`}
+          </td>
+          <td class="editable-cell">${editMode ? 
+            `<input type="number" class="edit-input" data-field="lost" data-index="${index}" value="${team.lost}">` : 
+            `<span class="editable" data-field="lost" data-index="${index}">${team.lost}</span>`}
+          </td>
+          <td class="editable-cell">${editMode ? 
+            `<input type="number" class="edit-input" data-field="goalsFor" data-index="${index}" value="${team.goalsFor}">` : 
+            `<span class="editable" data-field="goalsFor" data-index="${index}">${team.goalsFor}</span>`}
+          </td>
+          <td class="editable-cell">${editMode ? 
+            `<input type="number" class="edit-input" data-field="goalsAgainst" data-index="${index}" value="${team.goalsAgainst}">` : 
+            `<span class="editable" data-field="goalsAgainst" data-index="${index}">${team.goalsAgainst}</span>`}
+          </td>
           <td>${team.goalDifference}</td>
           <td><strong>${team.points}</strong></td>
         `;
@@ -774,9 +846,9 @@
         li.innerHTML = `
           <div class="fixture-teams">${fixture.teamA} vs ${fixture.teamB}</div>
           <div class="fixture-score">
-            <input type="number" min="0" class="score-a" value="${fixture.scoreA || ''}" placeholder="A" data-index="${index}">
+            <input type="number" min="0" class="score-a" value="${fixture.scoreA || ''}" placeholder="A" data-index="${index}" ${fixture.played ? 'disabled' : ''}>
             <span>-</span>
-            <input type="number" min="0" class="score-b" value="${fixture.scoreB || ''}" placeholder="B" data-index="${index}">
+            <input type="number" min="0" class="score-b" value="${fixture.scoreB || ''}" placeholder="B" data-index="${index}" ${fixture.played ? 'disabled' : ''}>
           </div>
           <div class="fixture-status ${fixture.played ? 'played' : ''}">${fixture.played ? 'Played' : 'Upcoming'}</div>
           <div class="fixture-actions">
@@ -790,6 +862,24 @@
         `;
         
         fixtureList.appendChild(li);
+      });
+    }
+    
+    // Populate team selects
+    function populateTeamSelects() {
+      teamASelect.innerHTML = '<option value="">Select Team A</option>';
+      teamBSelect.innerHTML = '<option value="">Select Team B</option>';
+      
+      teams.forEach(team => {
+        const optionA = document.createElement('option');
+        optionA.value = team.name;
+        optionA.textContent = team.name;
+        teamASelect.appendChild(optionA);
+        
+        const optionB = document.createElement('option');
+        optionB.value = team.name;
+        optionB.textContent = team.name;
+        teamBSelect.appendChild(optionB);
       });
     }
     
@@ -852,15 +942,18 @@
           }
           showToast('Edit mode disabled', 'success');
         }
+        
+        // Re-render table to show/hide input fields
+        renderTable();
       });
       
       // Add fixture
       document.getElementById('add-fixture-btn').addEventListener('click', () => {
-        const teamA = teamAInput.value.trim();
-        const teamB = teamBInput.value.trim();
+        const teamA = teamASelect.value;
+        const teamB = teamBSelect.value;
         
         if (!teamA || !teamB) {
-          showToast('Please enter both team names', 'warning');
+          showToast('Please select both teams', 'warning');
           return;
         }
         
@@ -881,14 +974,14 @@
         renderFixtures();
         showToast('Fixture added', 'success');
         
-        // Reset inputs
-        teamAInput.value = '';
-        teamBInput.value = '';
+        // Reset selects
+        teamASelect.selectedIndex = 0;
+        teamBSelect.selectedIndex = 0;
       });
       
-      // Table cell editing
+      // Table cell editing (for non-edit mode)
       tableBody.addEventListener('click', (e) => {
-        if (!editMode) return;
+        if (editMode) return; // Don't handle clicks in edit mode
         
         const cell = e.target.closest('.editable');
         if (!cell) return;
@@ -901,9 +994,54 @@
         startEdit(cell);
       });
       
-      // Handle input events when editing
+      // Handle input events in edit mode
+      tableBody.addEventListener('input', (e) => {
+        if (!editMode || !e.target.classList.contains('edit-input')) return;
+        
+        const field = e.target.dataset.field;
+        const index = parseInt(e.target.dataset.index);
+        const team = teams[index];
+        
+        if (!team) return;
+        
+        let newValue;
+        if (field === 'name') {
+          newValue = e.target.value.trim();
+          if (!newValue) {
+            showToast('Team name cannot be empty', 'warning');
+            e.target.value = team.name; // Reset to original value
+            return;
+          }
+        } else {
+          newValue = parseInt(e.target.value) || 0;
+          if (newValue < 0) {
+            showToast('Value cannot be negative', 'warning');
+            e.target.value = team[field]; // Reset to original value
+            return;
+          }
+        }
+        
+        // Update team data
+        team[field] = newValue;
+        
+        // Save data
+        saveData();
+        
+        // Re-render table to update calculated fields
+        renderTable();
+        
+        // Focus back on the edited field
+        setTimeout(() => {
+          const input = document.querySelector(`input[data-field="${field}"][data-index="${index}"]`);
+          if (input) {
+            input.focus();
+          }
+        }, 0);
+      });
+      
+      // Handle input events when editing (non-edit mode)
       document.addEventListener('input', (e) => {
-        if (e.target.classList.contains('edit-input')) {
+        if (e.target.classList.contains('edit-input') && !editMode) {
           // Auto-resize input for team names
           if (e.target.classList.contains('text-input')) {
             e.target.style.width = Math.max(150, e.target.value.length * 8) + 'px';
@@ -911,9 +1049,9 @@
         }
       });
       
-      // Handle key events when editing
+      // Handle key events when editing (non-edit mode)
       document.addEventListener('keydown', (e) => {
-        if (!currentEditCell) return;
+        if (!currentEditCell || editMode) return;
         
         if (e.key === 'Enter') {
           finishEdit(true);
@@ -922,9 +1060,9 @@
         }
       });
       
-      // Handle clicks outside to finish editing
+      // Handle clicks outside to finish editing (non-edit mode)
       document.addEventListener('click', (e) => {
-        if (currentEditCell && !currentEditCell.contains(e.target)) {
+        if (currentEditCell && !currentEditCell.contains(e.target) && !editMode) {
           finishEdit(true);
         }
       });
@@ -966,10 +1104,10 @@
           saveData();
           renderTable();
           renderFixtures();
-          showToast('Match result recorded', 'success');
+          showToast('Match result recorded and standings updated', 'success');
           
         } else if (action === 'revoke') {
-          if (!confirm('Revoke this match result?')) return;
+          if (!confirm('Revoke this match result? This will update the standings.')) return;
           
           // Revert team stats
           revertTeamStats(fixture.teamA, fixture.teamB, fixture.scoreA, fixture.scoreB);
@@ -982,10 +1120,10 @@
           saveData();
           renderTable();
           renderFixtures();
-          showToast('Match result revoked', 'success');
+          showToast('Match result revoked and standings updated', 'success');
           
         } else if (action === 'delete') {
-          if (!confirm('Delete this fixture?')) return;
+          if (!confirm('Delete this fixture? This will update the standings if the match was played.')) return;
           
           // If played, revert stats first
           if (fixture.played) {
@@ -994,8 +1132,9 @@
           
           fixtures.splice(index, 1);
           saveData();
+          renderTable();
           renderFixtures();
-          showToast('Fixture deleted', 'success');
+          showToast('Fixture deleted and standings updated', 'success');
         }
       });
       
@@ -1016,7 +1155,7 @@
       });
     }
     
-    // Start editing a cell
+    // Start editing a cell (non-edit mode)
     function startEdit(cell) {
       if (currentEditCell === cell) return;
       
@@ -1058,7 +1197,7 @@
       }
     }
     
-    // Finish editing and save or cancel
+    // Finish editing and save or cancel (non-edit mode)
     function finishEdit(save) {
       if (!currentEditCell) return;
       
