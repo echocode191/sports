@@ -1,1189 +1,1184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soka Mashinani - Football Shoes & Gear</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #0d8c3d;
-            --secondary: #054f1f;
-            --accent: #e63946;
-            --dark: #212121;
-            --light: #f5f5f5;
-            --text: #333;
-            --white: #ffffff;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Roboto', sans-serif;
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-color: #f8f9fa;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Oswald', sans-serif;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        /* Mobile Menu Styles */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -300px;
-            width: 300px;
-            height: 100vh;
-            background-color: var(--primary);
-            z-index: 1001;
-            padding: 20px;
-            transition: right 0.3s ease;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .mobile-menu.active {
-            right: 0;
-        }
-        
-        .mobile-menu-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            color: var(--white);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .mobile-menu ul {
-            list-style: none;
-            margin-top: 50px;
-        }
-        
-        .mobile-menu ul li {
-            margin-bottom: 20px;
-        }
-        
-        .mobile-menu ul li a {
-            color: var(--white);
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        
-        .mobile-menu ul li a:hover {
-            color: var(--accent);
-        }
-        
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            display: none;
-        }
-        
-        .menu-overlay.active {
-            display: block;
-        }
-        
-        /* Header Styles */
-        header {
-            background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 999;
-            transition: all 0.3s ease;
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-        
-        .logo {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            margin-right: 8px;
-            color: var(--accent);
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-        
-        .menu-toggle {
-            display: block;
-            font-size: 1.5rem;
-            color: var(--primary);
-            cursor: pointer;
-        }
-        
-        nav {
-            display: none;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(13, 140, 61, 0.85), rgba(5, 79, 31, 0.9)), url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') no-repeat center center/cover;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: fadeInUp 1s ease;
-        }
-        
-        .hero p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 1s ease 0.2s;
-            animation-fill-mode: both;
-        }
-        
-        .motto {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 1s ease 0.4s;
-            animation-fill-mode: both;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            background-color: var(--accent);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            border: 2px solid var(--accent);
-            animation: fadeInUp 1s ease 0.6s;
-            animation-fill-mode: both;
-        }
-        
-        .btn:hover {
-            background-color: transparent;
-            color: var(--accent);
-            transform: translateY(-3px);
-        }
-        
-        /* Featured Products */
-        .featured {
-            padding: 60px 0;
-            background-color: var(--white);
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .section-title h2 {
-            font-size: 2rem;
-            color: var(--secondary);
-            text-transform: uppercase;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            width: 50px;
-            height: 3px;
-            background-color: var(--accent);
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .product-slider {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-container {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-        
-        .product-card {
-            min-width: 280px;
-            margin-right: 15px;
-            background-color: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .product-img {
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .product-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .product-card:hover .product-img img {
-            transform: scale(1.1);
-        }
-        
-        .product-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--accent);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .product-info h3 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            color: var(--secondary);
-        }
-        
-        .product-info p {
-            margin-bottom: 15px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .product-price {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .product-btn {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .product-btn:hover {
-            background-color: var(--secondary);
-            transform: translateY(-3px);
-        }
-        
-        .slider-controls {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .slider-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .slider-btn:hover {
-            background-color: var(--secondary);
-        }
-        
-        /* Players Section */
-        .players {
-            padding: 60px 0;
-            background-color: var(--light);
-        }
-        
-        .players-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .player-card {
-            background-color: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .player-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .player-img {
-            height: 250px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .player-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .player-card:hover .player-img img {
-            transform: scale(1.1);
-        }
-        
-        .player-info {
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .player-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 5px;
-            color: var(--secondary);
-        }
-        
-        .player-info p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-        
-        .player-quote {
-            font-style: italic;
-            color: #555;
-            font-size: 0.9rem;
-            position: relative;
-            padding: 0 15px;
-        }
-        
-        .player-quote::before {
-            content: '"';
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-size: 1.5rem;
-            color: var(--accent);
-        }
-        
-        /* About Section */
-        .about {
-            padding: 60px 0;
-            background-color: var(--white);
-        }
-        
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-        
-        .about-text {
-            flex: 1;
-        }
-        
-        .about-text h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .about-text p {
-            margin-bottom: 15px;
-        }
-        
-        .about-img {
-            flex: 1;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .about-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        /* Contact Section */
-        .contact {
-            padding: 60px 0;
-            background-color: var(--light);
-        }
-        
-        .contact-container {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-        
-        .contact-info {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .contact-info h3 {
-            font-size: 1.5rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-        
-        .contact-info p {
-            margin-bottom: 15px;
-        }
-        
-        .contact-details {
-            margin-top: 20px;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .contact-item i {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-right: 10px;
-            width: 25px;
-        }
-        
-        .contact-item a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            background-color: #25D366;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }
-        
-        .whatsapp-btn i {
-            margin-right: 8px;
-        }
-        
-        .whatsapp-btn:hover {
-            background-color: #128C7E;
-            transform: translateY(-3px);
-        }
-        
-        .contact-form {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .contact-form h3 {
-            font-size: 1.5rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-        }
-        
-        .form-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .form-btn:hover {
-            background-color: var(--secondary);
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 40px 0 20px;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-col h3 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 2px;
-            background-color: var(--accent);
-            bottom: 0;
-            left: 0;
-        }
-        
-        .footer-col p {
-            margin-bottom: 15px;
-            color: #ccc;
-            font-size: 0.9rem;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 35px;
-            height: 35px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            background-color: var(--accent);
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            font-size: 0.8rem;
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Responsive */
-        @media (min-width: 768px) {
-            .menu-toggle {
-                display: none;
-            }
-            
-            nav {
-                display: block;
-            }
-            
-            nav ul {
-                display: flex;
-                list-style: none;
-            }
-            
-            nav ul li {
-                margin-left: 20px;
-            }
-            
-            nav ul li a {
-                text-decoration: none;
-                color: var(--dark);
-                font-weight: 500;
-                transition: color 0.3s ease;
-            }
-            
-            nav ul li a:hover {
-                color: var(--primary);
-            }
-            
-            .hero h1 {
-                font-size: 3rem;
-            }
-            
-            .hero p {
-                font-size: 1.3rem;
-            }
-            
-            .motto {
-                font-size: 1.5rem;
-            }
-            
-            .section-title h2 {
-                font-size: 2.2rem;
-            }
-            
-            .about-content {
-                flex-direction: row;
-            }
-            
-            .contact-container {
-                flex-direction: row;
-            }
-        }
-        
-        @media (min-width: 992px) {
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-            
-            .section-title h2 {
-                font-size: 2.5rem;
-            }
-            
-            .product-card {
-                min-width: 300px;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Kiminini Premier League - Live standings, fixtures, and results" />
+  <meta name="theme-color" content="#0b8a3e" />
+  <title>Kiminini Premier League — Live (Local)</title>
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- html2canvas for export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <style>
+    :root{
+      --green:#0b8a3e;
+      --light:#e9fff0;
+      --accent:#12b24a;
+      --muted:#6b6b6b;
+      --glass: rgba(255,255,255,0.9);
+      --dark:#063d1f;
+      --shadow: rgba(6,80,34,0.12);
+      --orange:#e07a2f;
+    }
+    
+    *{box-sizing:border-box}
+    
+    body{
+      margin:0; 
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg,#eaf9ee 0%, #f0fcf4 50%, #ffffff 100%);
+      color:var(--dark);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding-bottom:60px;
+      min-height: 100vh;
+    }
+    
+    header{
+      background: linear-gradient(90deg,var(--green), #0f7b39);
+      color:white; 
+      padding:24px 16px; 
+      text-align:center;
+      box-shadow: 0 6px 18px rgba(11,138,62,0.15);
+      position:sticky; 
+      top:0; 
+      z-index:20;
+      animation: slideDown .6s ease;
+    }
+    
+    header h1 { 
+      margin:0; 
+      font-size:24px; 
+      letter-spacing:1px;
+      font-weight: 800;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    header p { 
+      margin:6px 0 0; 
+      opacity:0.95; 
+      font-size:14px;
+      font-weight: 500;
+    }
+    
+    .wrap { 
+      max-width:1100px; 
+      margin:18px auto; 
+      padding:0 14px; 
+    }
+    
+    /* table */
+    #table-container {
+      background:var(--glass); 
+      border-radius:16px; 
+      padding:16px;
+      box-shadow: 0 10px 30px var(--shadow);
+      backdrop-filter: blur(10px);
+      transition: transform .25s ease, box-shadow .25s ease;
+      border: 1px solid rgba(11,138,62,0.1);
+      overflow: hidden;
+    }
+    
+    #table-container:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 35px var(--shadow);
+    }
+    
+    table { 
+      width:100%; 
+      border-collapse:collapse; 
+      font-weight:600;
+    }
+    
+    thead th{
+      background:linear-gradient(90deg,var(--green), #0b6e33); 
+      color:white; 
+      padding:14px 10px; 
+      font-size:14px;
+      text-align:center; 
+      border-right: 1px solid rgba(255,255,255,0.06);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    
+    thead th:first-child {
+      border-top-left-radius: 8px;
+    }
+    
+    thead th:last-child {
+      border-top-right-radius: 8px;
+      border-right: none;
+    }
+    
+    tbody td { 
+      padding:12px 8px; 
+      text-align:center; 
+      border-bottom:1px solid rgba(0,0,0,0.04); 
+      font-weight:700;
+      transition: all 0.2s ease;
+    }
+    
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+    
+    tbody tr:nth-child(odd) td { 
+      background: rgba(11,138,62,0.02); 
+    }
+    
+    tbody tr:hover td { 
+      background: var(--light); 
+      transform: translateY(-1px); 
+      transition: all 0.15s ease;
+    }
+    
+    td.name { 
+      text-align:left; 
+      padding-left:14px; 
+      font-weight:800; 
+      color:var(--dark);
+      display: flex;
+      align-items: center;
+    }
+    
+    .team-position {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background-color: var(--green);
+      color: white;
+      border-radius: 50%;
+      margin-right: 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    
+    .top-3 .team-position {
+      background: linear-gradient(135deg, #f0ad4e, #d9534f);
+    }
+    
+    td.editable:hover { 
+      outline: 2px dashed rgba(18,178,74,0.3); 
+      cursor: pointer;
+      background-color: rgba(18,178,74,0.1);
+    }
+    
+    .controls{ 
+      display:flex; 
+      gap:12px; 
+      align-items:center; 
+      justify-content:space-between; 
+      margin:16px 0; 
+      flex-wrap:wrap;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .left, .right { 
+      display:flex; 
+      gap:10px; 
+      align-items:center; 
+    }
+    
+    .btn {
+      background:var(--green); 
+      color:white; 
+      padding:10px 16px; 
+      border-radius:8px; 
+      border:none; 
+      cursor:pointer;
+      box-shadow: 0 6px 14px rgba(11,138,62,0.12); 
+      font-weight:700;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .btn:hover {
+      background: #0a7a36;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(11,138,62,0.18);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn i {
+      font-size: 14px;
+    }
+    
+    .btn.ghost { 
+      background:transparent; 
+      color:var(--green); 
+      border:1px solid rgba(11,138,62,0.14); 
+      box-shadow:none;
+    }
+    
+    .btn.ghost:hover {
+      background: rgba(11,138,62,0.05);
+    }
+    
+    .btn.warn { 
+      background:var(--orange); 
+      box-shadow: none;
+    }
+    
+    .btn.warn:hover {
+      background: #d0681f;
+    }
+    
+    .small { 
+      padding:8px 12px; 
+      font-size:13px; 
+    }
+    
+    .fixtures { 
+      margin-top:24px; 
+      background: #fff; 
+      border-radius:12px; 
+      padding:16px; 
+      box-shadow:0 8px 20px rgba(6,80,34,0.04);
+      border: 1px solid rgba(11,138,62,0.08);
+    }
+    
+    .fixtures h2 { 
+      margin:0 0 12px 0; 
+      font-size:18px; 
+      color:var(--green);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .fixtures-list { 
+      list-style:none; 
+      padding:0; 
+      margin:0; 
+      display:flex; 
+      flex-direction:column; 
+      gap:10px; 
+    }
+    
+    .fixture {
+      display:flex; 
+      align-items:center; 
+      justify-content:space-between; 
+      gap:10px; 
+      padding:12px; 
+      border-radius:10px;
+      border:1px solid rgba(6,80,34,0.04);
+      background: #fff;
+      transition: all 0.2s ease;
+    }
+    
+    .fixture:hover {
+      border-color: rgba(11,138,62,0.2);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    
+    .fixture .left { 
+      display:flex; 
+      gap:12px; 
+      align-items:center; 
+    }
+    
+    .fixture .teams { 
+      font-weight:800; 
+      color:var(--dark); 
+      min-width:240px;
+      font-size: 15px;
+    }
+    
+    .fixture input[type="number"]{ 
+      width:60px; 
+      padding:8px; 
+      border-radius:6px; 
+      border:1px solid #ccc;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .fixture .meta { 
+      color:var(--muted); 
+      font-size:13px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    
+    .fixture .meta.played {
+      background: rgba(11,138,62,0.1);
+      color: var(--green);
+    }
+    
+    label { 
+      font-weight:700; 
+      color:var(--green); 
+      margin-right:6px; 
+    }
+    
+    .admin-section { 
+      display:none; 
+      margin-top:16px; 
+      background:#f3fff5; 
+      border-radius:10px; 
+      padding:16px; 
+      border:1px solid rgba(11,138,62,0.08);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+    }
+    
+    .admin-section p {
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+    
+    .muted { 
+      color:var(--muted); 
+      font-weight:600; 
+      font-size:13px 
+    }
+    
+    .center { 
+      text-align:center 
+    }
+    
+    footer { 
+      margin-top:24px; 
+      text-align:center; 
+      color:var(--muted); 
+      font-size:13px;
+      padding: 16px;
+    }
+    
+    @keyframes slideDown { 
+      from { 
+        transform:translateY(-18px); 
+        opacity:0 
+      } 
+      to { 
+        transform:none; 
+        opacity:1 
+      } 
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Status indicator */
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    
+    .status-indicator.locked {
+      background-color: var(--muted);
+    }
+    
+    .status-indicator.unlocked {
+      background-color: #4caf50;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+    }
+    
+    /* small screens */
+    @media (max-width:720px){
+      header h1 { font-size: 20px; }
+      header p { font-size: 12px; }
+      
+      .controls { padding: 12px; gap: 8px; }
+      .btn { padding: 8px 12px; font-size: 13px; }
+      
+      td.name { 
+        font-size:14px;
+        padding-left: 8px;
+      }
+      
+      thead th:nth-child(1), tbody td:nth-child(1) { display:none }
+      thead th:nth-child(7), thead th:nth-child(8) { display:none }
+      table { font-size:12px }
+      .fixture .teams { min-width:160px; font-size: 14px; }
+      .fixture input[type="number"] { width: 50px; padding: 6px; }
+    }
+    
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--dark);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .toast.success {
+      background: var(--green);
+    }
+    
+    .toast.error {
+      background: #e74c3c;
+    }
+    
+    .toast.warning {
+      background: var(--orange);
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Edit mode styles */
+    .admin-editable {
+      position: relative;
+    }
+    
+    .admin-editable::after {
+      content: '\f303';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      color: var(--green);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    
+    .admin-editable:hover::after {
+      opacity: 0.7;
+    }
+    
+    /* Last updated indicator */
+    .last-updated {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+      margin-top: 8px;
+    }
+  </style>
 </head>
 <body>
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <div class="mobile-menu-close" id="mobileMenuClose">
-            <i class="fas fa-times"></i>
-        </div>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#featured">Featured</a></li>
-            <li><a href="#players">Players</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+<header>
+  <h1>Kiminini Premier League</h1>
+  <p>Live (Local) — editable & persistent in this browser</p>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <div class="left">
+      <div>
+        <label for="admin-pass" class="muted">Admin password:</label>
+        <input id="admin-pass" type="password" placeholder="Enter admin password" />
+        <button class="btn small" id="btn-login">
+          <i class="fas fa-lock"></i> Unlock
+        </button>
+      </div>
+      <button class="btn ghost small" id="btn-reset" title="Reset to seeded data">
+        <i class="fas fa-redo"></i> Reset to seed
+      </button>
+      <button class="btn ghost small" id="btn-clear" title="Clear all data (table & fixtures)">
+        <i class="fas fa-trash"></i> Clear All
+      </button>
     </div>
-    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="right">
+      <button class="btn small" id="btn-export">
+        <i class="fas fa-download"></i> Export PNG
+      </button>
+      <button class="btn small" id="btn-share">
+        <i class="fas fa-share-alt"></i> Share
+      </button>
+      <div class="muted">Admin mode: <span id="admin-ind"><span class="status-indicator locked"></span>locked</span></div>
+    </div>
+  </div>
+  
+  <div id="table-container" aria-live="polite">
+    <table id="league-table" role="table">
+      <thead>
+        <tr>
+          <th>#</th><th>Club</th><th>P</th><th>W</th><th>D</th><th>L</th><th>F</th><th>A</th><th>GD</th><th>Pts</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+    <div class="last-updated" id="last-updated">Last updated: Never</div>
+  </div>
+  
+  <div class="fixtures" id="fixtures-area">
+    <h2><i class="fas fa-calendar-alt"></i> Fixtures</h2>
+    <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap: wrap;">
+      <select id="addA" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;"></select>
+      <div style="font-weight:800;color:var(--muted)">vs</div>
+      <select id="addB" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;"></select>
+      <button class="btn" id="add-fixture">
+        <i class="fas fa-plus"></i> Add Fixture
+      </button>
+    </div>
+    <ul class="fixtures-list" id="fixtures-list"></ul>
+    <div class="admin-section" id="admin-tools">
+      <p class="muted"><i class="fas fa-info-circle"></i> Click a table cell to edit (double-click) when admin unlocked. For W/D/L/F/A edits the system recomputes P, GD, Pts.</p>
+      <p class="muted"><i class="fas fa-info-circle"></i> When marking a fixture "Played" make sure scores are set; the system will update team stats automatically.</p>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="muted">Double-click a cell to edit (admin only). Changes saved locally.</div>
+  </footer>
+</div>
 
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <a href="#" class="logo">
-                <i class="fas fa-futbol"></i>
-                SOKA MASHINANI
-            </a>
-            <div class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#featured">Featured</a></li>
-                    <li><a href="#players">Players</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================
+   Editable / Local Storage App
+   ============================ */
+const STORAGE_TABLE = 'kpl_table_v1';
+const STORAGE_FIXTURES = 'kpl_fixtures_v1';
+const STORAGE_LAST_UPDATED = 'kpl_last_updated';
+const ADMIN_PASS = '2030';
+
+// Seed data from screenshot
+const SEED = [
+  {name:"Kiminini Legends FC", P:34,W:29,D:3,L:2,F:101,A:32,GD:69,Pts:90},
+  {name:"Hilario Allstars FC", P:34,W:27,D:5,L:2,F:98,A:16,GD:82,Pts:86},
+  {name:"Kiminini Stars FC", P:34,W:24,D:5,L:5,F:88,A:33,GD:55,Pts:77},
+  {name:"Small Tigers FC", P:34,W:22,D:5,L:7,F:80,A:40,GD:40,Pts:71},
+  {name:"Samba FC", P:34,W:21,D:4,L:9,F:67,A:29,GD:38,Pts:67},
+  {name:"Royal Bullets FC", P:34,W:18,D:6,L:10,F:89,A:47,GD:42,Pts:60},
+  {name:"Namawanga FC", P:34,W:17,D:8,L:9,F:78,A:49,GD:29,Pts:59},
+  {name:"Kiminini United FC", P:34,W:17,D:7,L:10,F:78,A:41,GD:37,Pts:58},
+  {name:"Konoin Legends FC", P:34,W:16,D:7,L:11,F:67,A:55,GD:12,Pts:55},
+  {name:"Intermiami FC", P:34,W:16,D:7,L:11,F:65,A:55,GD:10,Pts:55},
+  {name:"Kiminini V. College", P:34,W:11,D:7,L:16,F:52,A:70,GD:-18,Pts:40},
+  {name:"Roadblock FC", P:34,W:10,D:7,L:17,F:66,A:75,GD:-9,Pts:37},
+  {name:"Sabata FC", P:33,W:9,D:7,L:17,F:41,A:68,GD:-27,Pts:34},
+  {name:"Bukwet FC", P:34,W:10,D:4,L:20,F:38,A:70,GD:-32,Pts:34},
+  {name:"Baraton Allstars FC", P:34,W:10,D:4,L:20,F:41,A:85,GD:-44,Pts:34},
+  {name:"14 Brothers FC", P:34,W:7,D:5,L:22,F:43,A:85,GD:-42,Pts:26},
+  {name:"Mitoto FC", P:34,W:6,D:7,L:21,F:40,A:68,GD:-28,Pts:25},
+  {name:"Wazoefu FC", P:34,W:6,D:7,L:21,F:43,A:88,GD:-45,Pts:25},
+  {name:"Kiminini Rangers FC", P:34,W:5,D:5,L:24,F:52,A:107,GD:-55,Pts:20},
+  {name:"Home United FC", P:33,W:1,D:4,L:28,F:22,A:136,GD:-114,Pts:7}
+];
+
+// App state
+let teams = [];
+let fixtures = [];
+let isAdmin = false;
+let lastUpdated = null;
+
+/* ---------- storage helpers ---------- */
+function saveStorage(){
+  try {
+    localStorage.setItem(STORAGE_TABLE, JSON.stringify(teams));
+    localStorage.setItem(STORAGE_FIXTURES, JSON.stringify(fixtures));
+    lastUpdated = new Date();
+    localStorage.setItem(STORAGE_LAST_UPDATED, lastUpdated.toISOString());
+    updateLastUpdatedDisplay();
+  } catch (e) {
+    console.error('Error saving to localStorage:', e);
+    showToast('Failed to save data. Storage may be full.', 'error');
+  }
+}
+
+function loadStorage(){
+  const t = localStorage.getItem(STORAGE_TABLE);
+  const f = localStorage.getItem(STORAGE_FIXTURES);
+  const lu = localStorage.getItem(STORAGE_LAST_UPDATED);
+  
+  if(t && f){
+    try {
+      teams = JSON.parse(t);
+      fixtures = JSON.parse(f);
+      if (lu) {
+        lastUpdated = new Date(lu);
+        updateLastUpdatedDisplay();
+      }
+      return true;
+    } catch(e){ 
+      console.warn('Corrupt local data, will reseed'); 
+      return false; 
+    }
+  }
+  return false;
+}
+
+function seedStorage(){
+  teams = JSON.parse(JSON.stringify(SEED));
+  fixtures = []; // start empty; admin can add
+  saveStorage();
+}
+
+function updateLastUpdatedDisplay() {
+  const element = document.getElementById('last-updated');
+  if (lastUpdated) {
+    element.textContent = `Last updated: ${lastUpdated.toLocaleString()}`;
+  } else {
+    element.textContent = 'Last updated: Never';
+  }
+}
+
+/* ---------- rendering ---------- */
+const tbody = document.getElementById('table-body');
+const fixturesList = document.getElementById('fixtures-list');
+const addA = document.getElementById('addA');
+const addB = document.getElementById('addB');
+
+function calcDerived(t){
+  // ensure numbers
+  t.W = Number(t.W)||0; 
+  t.D = Number(t.D)||0; 
+  t.L = Number(t.L)||0;
+  t.F = Number(t.F)||0; 
+  t.A = Number(t.A)||0;
+  t.P = t.W + t.D + t.L;
+  t.GD = t.F - t.A;
+  t.Pts = (t.W * 3) + t.D;
+}
+
+function renderTable(){
+  // ensure derived fields are accurate
+  teams.forEach(calcDerived);
+  
+  // sort by points, then GD, then F
+  teams.sort((a,b)=> b.Pts - a.Pts || b.GD - a.GD || b.F - a.F);
+  
+  tbody.innerHTML = '';
+  teams.forEach((t, idx) => {
+    const tr = document.createElement('tr');
+    tr.dataset.index = idx;
+    
+    // Add class for top 3 teams
+    if (idx < 3) {
+      tr.classList.add('top-3');
+    }
+    
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td class="name" data-key="name">
+        <span class="team-position">${idx+1}</span>
+        ${escapeHtml(t.name)}
+      </td>
+      <td class="editable" data-key="P">${t.P}</td>
+      <td class="editable" data-key="W">${t.W}</td>
+      <td class="editable" data-key="D">${t.D}</td>
+      <td class="editable" data-key="L">${t.L}</td>
+      <td class="editable" data-key="F">${t.F}</td>
+      <td class="editable" data-key="A">${t.A}</td>
+      <td data-key="GD">${t.GD}</td>
+      <td data-key="Pts">${t.Pts}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  
+  populateTeamSelects();
+}
+
+/* ---------- fixtures rendering ---------- */
+function renderFixtures(){
+  fixturesList.innerHTML = '';
+  
+  if (fixtures.length === 0) {
+    fixturesList.innerHTML = '<li class="muted center">No fixtures added yet</li>';
+    return;
+  }
+  
+  fixtures.forEach((f, idx) => {
+    const li = document.createElement('li');
+    li.className = 'fixture';
+    li.dataset.index = idx;
+    li.innerHTML = `
+      <div class="left">
+        <div class="teams">${escapeHtml(f.teamA)} <strong style="color:var(--muted)">vs</strong> ${escapeHtml(f.teamB)}</div>
+        <div>
+          <input type="number" class="scoreA" value="${f.scoreA===null?'':f.scoreA}" min="0" placeholder="A" />
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Quality Football Boots</h1>
-            <p>Developing local football through nurturing talents</p>
-            <div class="motto">Kama si Kali, Si yetu ✅</div>
-            <a href="#featured" class="btn">Shop Now</a>
+        <div>-</div>
+        <div>
+          <input type="number" class="scoreB" value="${f.scoreB===null?'':f.scoreB}" min="0" placeholder="B" />
         </div>
-    </section>
+        <div class="meta ${f.status === 'played' ? 'played' : ''}">${f.status === 'played' ? 'Played' : 'Upcoming'}</div>
+      </div>
+      <div>
+        <button class="btn small play">${f.status==='played'?'Revoke':'Mark Played'}</button>
+        <button class="btn ghost small edit"><i class="fas fa-edit"></i></button>
+        <button class="btn ghost small del"><i class="fas fa-trash"></i></button>
+      </div>
+    `;
+    fixturesList.appendChild(li);
+  });
+}
 
-    <!-- Featured Products -->
-    <section class="featured" id="featured">
-        <div class="container">
-            <div class="section-title">
-                <h2>Featured Football Boots</h2>
-            </div>
-            <div class="product-slider">
-                <div class="product-container" id="productContainer">
-                    <!-- Product 1 -->
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Football Boots">
-                            <span class="product-badge">Best Seller</span>
-                        </div>
-                        <div class="product-info">
-                            <h3>Elite Pro Boots</h3>
-                            <p>Professional-grade boots for maximum performance</p>
-                            <div class="product-price">KES 3,500</div>
-                            <a href="https://wa.me/254108182707?text=Hi%20Soka%20Mashinani,%20I'm%20interested%20in%20the%20Elite%20Pro%20Boots" class="product-btn">Order on WhatsApp</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 2 -->
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Football Boots">
-                            <span class="product-badge">New</span>
-                        </div>
-                        <div class="product-info">
-                            <h3>Speed Strike Boots</h3>
-                            <p>Lightweight design for explosive acceleration</p>
-                            <div class="product-price">KES 2,800</div>
-                            <a href="https://wa.me/254108182707?text=Hi%20Soka%20Mashinani,%20I'm%20interested%20in%20the%20Speed%20Strike%20Boots" class="product-btn">Order on WhatsApp</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 3 -->
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Football Boots">
-                            <span class="product-badge">Popular</span>
-                        </div>
-                        <div class="product-info">
-                            <h3>Control Master Boots</h3>
-                            <p>Enhanced grip and ball control technology</p>
-                            <div class="product-price">KES 2,500</div>
-                            <a href="https://wa.me/254108182707?text=Hi%20Soka%20Mashinani,%20I'm%20interested%20in%20the%20Control%20Master%20Boots" class="product-btn">Order on WhatsApp</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 4 -->
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="https://images.unsplash.com/photo-1589994965851-a8f479c573a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Football Boots">
-                            <span class="product-badge">Affordable</span>
-                        </div>
-                        <div class="product-info">
-                            <h3>Starter Boots</h3>
-                            <p>Durable and affordable for beginners</p>
-                            <div class="product-price">KES 1,800</div>
-                            <a href="https://wa.me/254108182707?text=Hi%20Soka%20Mashinani,%20I'm%20interested%20in%20the%20Starter%20Boots" class="product-btn">Order on WhatsApp</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="slider-controls">
-                    <button class="slider-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
-                    <button class="slider-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-        </div>
-    </section>
+/* ---------- team selects ---------- */
+function populateTeamSelects(){
+  [addA, addB].forEach(sel => {
+    sel.innerHTML = '';
+    teams.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.name; 
+      opt.textContent = t.name;
+      sel.appendChild(opt);
+    });
+  });
+}
 
-    <!-- Players Section -->
-    <section class="players" id="players">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our Talented Players</h2>
-            </div>
-            <div class="players-grid">
-                <!-- Player 1 -->
-                <div class="player-card">
-                    <div class="player-img">
-                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Player">
-                    </div>
-                    <div class="player-info">
-                        <h3>James Otieno</h3>
-                        <p>Striker</p>
-                        <div class="player-quote">Soka Mashinani boots helped me improve my game dramatically!</div>
-                    </div>
-                </div>
-                
-                <!-- Player 2 -->
-                <div class="player-card">
-                    <div class="player-img">
-                        <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" alt="Player">
-                    </div>
-                    <div class="player-info">
-                        <h3>Grace Atieno</h3>
-                        <p>Midfielder</p>
-                        <div class="player-quote">Quality gear at affordable prices. Perfect for nurturing talent!</div>
-                    </div>
-                </div>
-                
-                <!-- Player 3 -->
-                <div class="player-card">
-                    <div class="player-img">
-                        <img src="https://images.unsplash.com/photo-1552667466-07770ae110d0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" alt="Player">
-                    </div>
-                    <div class="player-info">
-                        <h3>David Kamau</h3>
-                        <p>Defender</p>
-                        <div class="player-quote">The boots provide excellent grip and durability. Highly recommend!</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+/* ---------- helpers ---------- */
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>About Soka Mashinani</h2>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>Nurturing Football Talents</h3>
-                    <p>Soka Mashinani is a movement dedicated to developing local football through nurturing talents at the grassroots level.</p>
-                    <p>We believe that every talented player deserves access to quality gear that can help them reach their full potential.</p>
-                    <p>Our mission is to provide affordable, high-quality football equipment to players across the country.</p>
-                    <p>With our commitment to excellence and community development, we're not just selling football gear - we're investing in the future of Kenyan football.</p>
-                </div>
-                <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" alt="Football Players">
-                </div>
-            </div>
-        </div>
-    </section>
+function findTeamByName(name){ 
+  return teams.find(t => t.name === name); 
+}
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Get In Touch</h2>
-            </div>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3>Pata Deal Safi 💯</h3>
-                    <p>We deliver quality affordable football gear countrywide upon placing your orders immediately.</p>
-                    <p>For orders and inquiries, reach out to us through:</p>
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+254108182707">+254 108 182 707</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+254799905375">+254 799 905 375</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fab fa-whatsapp"></i>
-                            <a href="https://wa.me/254108182707">WhatsApp: +254 108 182 707</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fab fa-whatsapp"></i>
-                            <a href="https://wa.me/254799905375">WhatsApp: +254 799 905 375</a>
-                        </div>
-                    </div>
-                    <a href="https://wa.me/254108182707?text=Hi%20Soka%20Mashinani,%20I'd%20like%20to%20place%20an%20order" class="whatsapp-btn">
-                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
-                    </a>
-                </div>
-                <div class="contact-form">
-                    <h3>Quick Order</h3>
-                    <form id="orderForm">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="product">Product Interested In</label>
-                            <input type="text" id="product" name="product" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Additional Information</label>
-                            <textarea id="message" name="message" rows="4"></textarea>
-                        </div>
-                        <button type="submit" class="form-btn">Submit Order</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = 'toast';
+  
+  if (type === 'success') {
+    toast.classList.add('success');
+  } else if (type === 'error') {
+    toast.classList.add('error');
+  } else if (type === 'warning') {
+    toast.classList.add('warning');
+  }
+  
+  toast.classList.add('show');
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>Soka Mashinani</h3>
-                    <p>A movement that develops local football through nurturing talents. Providing quality affordable football gear to players across Kenya.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#featured">Featured</a></li>
-                        <li><a href="#players">Players</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Our Products</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Football Boots</a></li>
-                        <li><a href="#">Football Jerseys</a></li>
-                        <li><a href="#">Football Shorts</a></li>
-                        <li><a href="#">Football Accessories</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Contact Info</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-phone"></i> +254 108 182 707</li>
-                        <li><i class="fas fa-phone"></i> +254 799 905 375</li>
-                        <li><i class="fab fa-whatsapp"></i> WhatsApp Orders</li>
-                        <li><i class="fas fa-truck"></i> Countrywide Delivery</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 Soka Mashinani. All Rights Reserved. Kama si Kali, Si yetu ✅</p>
-            </div>
-        </div>
-    </footer>
+/* ---------- ui interactions ---------- */
+document.getElementById('btn-login').addEventListener('click', ()=>{
+  const val = document.getElementById('admin-pass').value.trim();
+  if(val === ADMIN_PASS){
+    isAdmin = true;
+    document.getElementById('admin-ind').innerHTML = '<span class="status-indicator unlocked"></span>unlocked';
+    document.getElementById('admin-tools').style.display = 'block';
+    document.querySelectorAll('.editable, .name').forEach(el => el.classList.add('admin-editable'));
+    showToast('Admin unlocked — double-click any editable cell to modify.', 'success');
+    document.getElementById('admin-pass').value = '';
+  } else {
+    showToast('Wrong password', 'error');
+  }
+});
 
-    <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileMenuClose = document.getElementById('mobileMenuClose');
-        const menuOverlay = document.getElementById('menuOverlay');
-        
-        menuToggle.addEventListener('click', function() {
-            mobileMenu.classList.add('active');
-            menuOverlay.classList.add('active');
-        });
-        
-        mobileMenuClose.addEventListener('click', function() {
-            mobileMenu.classList.remove('active');
-            menuOverlay.classList.remove('active');
-        });
-        
-        menuOverlay.addEventListener('click', function() {
-            mobileMenu.classList.remove('active');
-            menuOverlay.classList.remove('active');
-        });
-        
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                
-                // Close mobile menu if open
-                mobileMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-            });
-        });
-        
-        // Product Slider
-        const productContainer = document.getElementById('productContainer');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        
-        let currentPosition = 0;
-        const cardWidth = 295; // card width + margin
-        
-        prevBtn.addEventListener('click', function() {
-            if (currentPosition < 0) {
-                currentPosition += cardWidth;
-                productContainer.style.transform = `translateX(${currentPosition}px)`;
-            }
-        });
-        
-        nextBtn.addEventListener('click', function() {
-            const maxPosition = -(productContainer.children.length - 1) * cardWidth;
-            if (currentPosition > maxPosition) {
-                currentPosition -= cardWidth;
-                productContainer.style.transform = `translateX(${currentPosition}px)`;
-            }
-        });
-        
-        // Form submission handler
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const product = document.getElementById('product').value;
-            const message = document.getElementById('message').value;
-            
-            // Create WhatsApp message
-            const whatsappMessage = `Hi Soka Mashinani, I'd like to place an order:%0A%0AName: ${name}%0APhone: ${phone}%0AProduct: ${product}%0AMessage: ${message}`;
-            
-            // Open WhatsApp with pre-filled message
-            window.open(`https://wa.me/254108182707?text=${whatsappMessage}`, '_blank');
-            
-            // Reset form
-            this.reset();
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-            } else {
-                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-            }
-        });
-        
-        // Animation on scroll
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
+// reset to seed
+document.getElementById('btn-reset').addEventListener('click', ()=>{
+  if(!confirm('Reset table & fixtures to original seeded values? This overwrites local changes.')) return;
+  seedStorage();
+  loadAndRender();
+  showToast('Data reset to seed values', 'success');
+});
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+// clear all
+document.getElementById('btn-clear').addEventListener('click', ()=>{
+  if(!confirm('Clear ALL saved table & fixtures? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_TABLE);
+  localStorage.removeItem(STORAGE_FIXTURES);
+  localStorage.removeItem(STORAGE_LAST_UPDATED);
+  teams = []; fixtures = []; lastUpdated = null;
+  renderTable(); renderFixtures(); updateLastUpdatedDisplay();
+  showToast('All data cleared. You can reset to seed if needed.', 'warning');
+});
 
-        document.querySelectorAll('.product-card, .player-card, .about-text, .about-img, .contact-info, .contact-form').forEach(el => {
-            el.style.opacity = 0;
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-    </script>
+// double-click to edit cells (admin only)
+tbody.addEventListener('dblclick', (ev) => {
+  if(!isAdmin) return;
+  const td = ev.target.closest('td');
+  if(!td) return;
+  const key = td.dataset.key;
+  if(!key) return;
+  // only allow editing for certain keys
+  if(!['name','W','D','L','F','A','P'].includes(key)) return;
+  td.contentEditable = 'true';
+  td.focus();
+  // select text
+  document.getSelection().collapse(td.firstChild, 0);
+});
+
+// when editing ends, save
+tbody.addEventListener('blur', (ev) => {
+  const td = ev.target.closest('td');
+  if(!td || td.contentEditable !== 'true') return;
+  td.contentEditable = 'false';
+  const tr = td.parentElement;
+  const idx = Number(tr.dataset.index);
+  const key = td.dataset.key;
+  let val = td.textContent.trim();
+  // if editing name allow string
+  if(key === 'name'){
+    teams[idx].name = val || teams[idx].name;
+  } else {
+    // numbers
+    const n = parseInt(val, 10);
+    teams[idx][key] = isNaN(n) ? 0 : n;
+  }
+  // recalc derived fields
+  calcDerived(teams[idx]);
+  saveStorage();
+  renderTable();
+  showToast('Table updated', 'success');
+}, true);
+
+// pressing Enter while editing commits and blurs
+tbody.addEventListener('keydown', (ev) => {
+  const td = ev.target.closest('td');
+  if(!td || td.contentEditable !== 'true') return;
+  if(ev.key === 'Enter'){
+    ev.preventDefault();
+    td.blur();
+  }
+});
+
+// add fixture
+document.getElementById('add-fixture').addEventListener('click', ()=>{
+  if(!isAdmin){ 
+    showToast('Admin only', 'error'); 
+    return; 
+  }
+  const teamA = addA.value, teamB = addB.value;
+  if(!teamA || !teamB) return;
+  if(teamA === teamB){ 
+    showToast('Select two different teams', 'error'); 
+    return; 
+  }
+  fixtures.push({ 
+    teamA, 
+    teamB, 
+    scoreA: null, 
+    scoreB: null, 
+    status: 'upcoming', 
+    id: Date.now() + Math.random() 
+  });
+  saveStorage(); 
+  renderFixtures();
+  showToast('Fixture added', 'success');
+  
+  // Reset selects
+  addA.selectedIndex = 0;
+  addB.selectedIndex = 0;
+});
+
+// fixtures list actions (delegation)
+fixturesList.addEventListener('click', (ev)=>{
+  const li = ev.target.closest('.fixture');
+  if(!li) return;
+  const idx = Number(li.dataset.index);
+  const f = fixtures[idx];
+  
+  // delete
+  if(ev.target.matches('.del') || ev.target.closest('.del')){
+    if(!isAdmin){ 
+      showToast('Admin only', 'error'); 
+      return; 
+    }
+    if(!confirm('Delete fixture?')) return;
+    fixtures.splice(idx,1); 
+    saveStorage(); 
+    renderFixtures(); 
+    showToast('Fixture deleted', 'success');
+    return;
+  }
+  
+  // edit: open prompt to swap teams quickly
+  if(ev.target.matches('.edit') || ev.target.closest('.edit')){
+    if(!isAdmin){ 
+      showToast('Admin only', 'error'); 
+      return; 
+    }
+    const newA = prompt('Team A name:', f.teamA) || f.teamA;
+    const newB = prompt('Team B name:', f.teamB) || f.teamB;
+    if(newA === newB){ 
+      showToast('Teams must be different', 'error'); 
+      return; 
+    }
+    f.teamA = newA; 
+    f.teamB = newB;
+    saveStorage(); 
+    renderFixtures();
+    showToast('Fixture updated', 'success');
+    return;
+  }
+  
+  // mark played / revoke
+  if(ev.target.matches('.play')){
+    if(!isAdmin){ 
+      showToast('Admin only', 'error'); 
+      return; 
+    }
+    // read scores from inputs
+    const scoreAInput = li.querySelector('.scoreA');
+    const scoreBInput = li.querySelector('.scoreB');
+    const sA = scoreAInput.value.trim();
+    const sB = scoreBInput.value.trim();
+    
+    if(ev.target.textContent.includes('Revoke')){
+      // revoke: subtract the previous result if any
+      if(f.status !== 'played'){ 
+        showToast('Fixture is not marked played', 'error'); 
+        return; 
+      }
+      if(!confirm('Revoke result? This will remove its effect from table.')) return;
+      // revert scoring: subtract previously added stats
+      revertFixtureToUpcoming(f);
+      f.status = 'upcoming';
+      f.scoreA = null; 
+      f.scoreB = null;
+      saveStorage(); 
+      renderTable(); 
+      renderFixtures();
+      showToast('Result revoked', 'success');
+      return;
+    }
+    
+    // marking played
+    if(sA === '' || sB === ''){ 
+      showToast('Please enter both scores before marking played', 'error'); 
+      return; 
+    }
+    const scoreA = parseInt(sA,10), scoreB = parseInt(sB,10);
+    if(isNaN(scoreA) || isNaN(scoreB)){ 
+      showToast('Scores invalid', 'error'); 
+      return; 
+    }
+    
+    // if already played previously, revoke previous first (safety)
+    if(f.status === 'played' && (f.scoreA !== null || f.scoreB !== null)){
+      revertFixtureToUpcoming(f);
+    }
+    
+    // apply to teams
+    applyFixtureResultToTeams(f.teamA, f.teamB, scoreA, scoreB);
+    f.status = 'played'; 
+    f.scoreA = scoreA; 
+    f.scoreB = scoreB;
+    saveStorage(); 
+    renderTable(); 
+    renderFixtures();
+    showToast('Match result recorded', 'success');
+    return;
+  }
+});
+
+// update score inputs on change (just store temp until played)
+fixturesList.addEventListener('change', (ev)=>{
+  const li = ev.target.closest('.fixture');
+  if(!li) return;
+  const idx = Number(li.dataset.index);
+  const f = fixtures[idx];
+  const a = li.querySelector('.scoreA').value.trim();
+  const b = li.querySelector('.scoreB').value.trim();
+  f.scoreA = a === '' ? null : Number(a);
+  f.scoreB = b === '' ? null : Number(b);
+  saveStorage();
+});
+
+/* ---------- fixture -> team application ---------- */
+function applyFixtureResultToTeams(nameA, nameB, scoreA, scoreB){
+  const ta = findTeamByName(nameA);
+  const tb = findTeamByName(nameB);
+  if(!ta || !tb){ 
+    showToast('Team not found in table', 'error'); 
+    return; 
+  }
+  
+  // backup original? We don't add complex history now
+  ta.P += 1; 
+  tb.P += 1;
+  ta.F += scoreA; 
+  ta.A += scoreB;
+  tb.F += scoreB; 
+  tb.A += scoreA;
+  
+  if(scoreA > scoreB){ 
+    ta.W += 1; 
+    tb.L += 1; 
+    ta.Pts += 3; 
+  }
+  else if(scoreA < scoreB){ 
+    tb.W += 1; 
+    ta.L += 1; 
+    tb.Pts += 3; 
+  }
+  else { 
+    ta.D += 1; 
+    tb.D += 1; 
+    ta.Pts += 1; 
+    tb.Pts += 1; 
+  }
+  
+  calcDerived(ta); 
+  calcDerived(tb);
+}
+
+/* ---------- revoke ---------- */
+function revertFixtureToUpcoming(f){
+  // subtract applied stats if we have recorded scores
+  if(f.status !== 'played' || f.scoreA === null || f.scoreB === null) return;
+  
+  const ta = findTeamByName(f.teamA);
+  const tb = findTeamByName(f.teamB);
+  if(!ta || !tb) return;
+  
+  ta.P -= 1; 
+  tb.P -=1;
+  ta.F -= f.scoreA; 
+  ta.A -= f.scoreB;
+  tb.F -= f.scoreB; 
+  tb.A -= f.scoreA;
+  
+  if(f.scoreA > f.scoreB){ 
+    ta.W -=1; 
+    tb.L -=1; 
+    ta.Pts -=3; 
+  }
+  else if(f.scoreA < f.scoreB){ 
+    tb.W -=1; 
+    ta.L -=1; 
+    tb.Pts -=3; 
+  }
+  else { 
+    ta.D -=1; 
+    tb.D -=1; 
+    ta.Pts -=1; 
+    tb.Pts -=1; 
+  }
+  
+  // ensure no negatives
+  ['W','D','L','P','F','A','Pts'].forEach(k=>{
+    if(ta[k] < 0) ta[k] = 0;
+    if(tb[k] < 0) tb[k] = 0;
+  });
+  
+  calcDerived(ta); 
+  calcDerived(tb);
+}
+
+/* ---------- export/share ---------- */
+document.getElementById('btn-export').addEventListener('click', ()=>{
+  showToast('Generating image...', 'success');
+  const el = document.getElementById('table-container');
+  html2canvas(el, {scale:2, backgroundColor: null}).then(canvas=>{
+    const data = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = data; 
+    link.download = 'kpl-table.png'; 
+    link.click();
+    showToast('Image exported successfully', 'success');
+  }).catch(err => {
+    console.error('Export error:', err);
+    showToast('Failed to export image', 'error');
+  });
+});
+
+document.getElementById('btn-share').addEventListener('click', async ()=>{
+  if(navigator.share){
+    showToast('Preparing image for sharing...', 'success');
+    const el = document.getElementById('table-container');
+    try {
+      const canvas = await html2canvas(el, {scale:2, backgroundColor: null});
+      canvas.toBlob(async blob=>{
+        const filesArray = [ new File([blob], 'kpl-table.png', { type: 'image/png' }) ];
+        try {
+          await navigator.share({ 
+            files: filesArray, 
+            title: 'Kiminini Premier League Table',
+            text: 'Check out the current Kiminini Premier League standings!'
+          });
+          showToast('Shared successfully', 'success');
+        } catch(err){ 
+          console.warn('Share cancelled or not available', err);
+          if (err.name !== 'AbortError') {
+            showToast('Share failed', 'error');
+          }
+        }
+      });
+    } catch (err) {
+      console.error('Share preparation error:', err);
+      showToast('Failed to prepare image for sharing', 'error');
+    }
+  } else {
+    showToast('Web Share not available in this browser — use Export PNG instead.', 'warning');
+  }
+});
+
+/* ---------- init ---------- */
+function loadAndRender(){
+  const ok = loadStorage();
+  if(!ok){ 
+    seedStorage(); 
+    loadStorage(); 
+  }
+  renderTable(); 
+  renderFixtures();
+}
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', () => {
+  loadAndRender();
+  
+  // Set up keyboard shortcut for admin login
+  document.addEventListener('keydown', (e) => {
+    // Ctrl+Shift+A for admin login
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+      document.getElementById('admin-pass').focus();
+    }
+  });
+});
+
+/* expose for debugging (optional) */
+window.__kpl = { teams, fixtures, saveStorage, seedStorage, loadStorage };
+</script>
 </body>
 </html>
-
